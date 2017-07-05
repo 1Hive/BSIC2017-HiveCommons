@@ -45,7 +45,7 @@ Ultimately there are far fewer people who can develop software then there are me
 
 The mechanism must be simple, standardized, and most importantly provide accountability to the community in order to be successful. The platform should enable funders to curate and fund projects, and provide an accountability guarantee in the form of milestone driven development and vesting schedules. 
 
-The [1Hive Funding Platform](#)(https://github.com/district0x/district-proposals/issues/3) district proposal is a good first step towards this goal, with the notable lack of a way for project contributors to fund and vote on the release of additional milestone driven bounties. Once the Hive Democracy voting mechanism is ready, this can easily be added such that anyone may claim a bounty, and then the funders could vote to release the funds. 
+The [1Hive Funding Platform](https://github.com/district0x/district-proposals/issues/3) district proposal is a good first step towards this goal, with the notable lack of a way for project contributors to fund and vote on the release of additional milestone driven bounties. Once the Hive Democracy voting mechanism is ready, this can easily be added such that anyone may claim a bounty, and then the funders could vote to release the funds. 
 
 This funding platform would enable community members to provide an incentive for developers to initially contribute to the commons, bootstrapping the community until the viral aspect of the HCL licenses begins to take effect and create a positive feedback loop. 
 
@@ -56,7 +56,7 @@ You can. Hive Commons is a grass-roots organization and everyone who believes in
 To realize the vision of Hive Commons the community will need to build, audit, and, test several smart contracts. Tokens, Voting and Arbitration, Escrow, Bounties, and Reserve contracts are all core components of the project. 
 
 ### Web3.0 Frontend Development
-The [1Hive community portal](#)(https://github.com/HiveCommons/1Hive) is a web3.0 enabled interface that will enable direct community engagement with Hive Commons. 
+The [1Hive community portal](https://github.com/HiveCommons/1Hive) is a web3.0 enabled interface that will enable direct community engagement with Hive Commons. 
 
 ### UX and Graphic Design
  Hive Commons goal is to attract a community of users who may not have even heard of cryptocurrency, making the 1Hive portal and community websites and general outward facing elements of the project as friendly as possible will be imperative to the success of the project. 
@@ -67,6 +67,5 @@ Decentralized blockchain governance is an emerging area and there are many uncer
 ### Not sure you fit in any of those categories?
 Even if you don’t have any of the above skillsets, if you want help, I can guarantee that you have something to contribute—Sharing ideas, poking holes in existing  plans, and generally discussion the project are all important contributions as well. 
 
-**So whatever your skillset is, join the community and get involved.** We are on [Github](#)(https://github.com/HiveCommons), [Medium](#)(https://medium.com/hive-commons), [Reddit](#)(https://www.reddit.com/r/HiveCommons/), and [Slack](#)(https://hivecommons.herokuapp.com). 
+**So whatever your skillset is, join the community and get involved.** We are on [Github](https://github.com/HiveCommons), [Medium](https://medium.com/hive-commons), [Reddit](https://www.reddit.com/r/HiveCommons/), and [Slack](https://hivecommons.herokuapp.com). 
 
-***Let’s change the world, together. ***
