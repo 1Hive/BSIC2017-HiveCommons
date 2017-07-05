@@ -1,7 +1,7 @@
 # Introducing Hive Commons
 # What is Hive Commons?
 
-[Hive Commons] is a grass roots movement intended to give the public a greater voice in industry and politics by using emerging technologies to enable new forms of collective activism.  Originally, I had planned to wait until I had things a bit more organized and polished but after submitting one of the components of the project as a [District0x District Proposal] I’ve had a few people interested in learning more about the grander vision for the project, so I’ve decided to go ahead and start moving things into a more public space. Up until now, the project has only existed in various local notes and powerpoint documents, but I’m now starting to move things [into Github], and have also created a [Reddit] and [Slack]community for people who are interested in the project to gather. 
+Hive Commons is a grass roots movement intended to give the public a greater voice in industry and politics by using emerging technologies to enable new forms of collective activism.  Originally, I had planned to wait until I had things a bit more organized and polished but after submitting one of the components of the project as a [District0x District Proposal] I’ve had a few people interested in learning more about the grander vision for the project, so I’ve decided to go ahead and start moving things into a more public space. Up until now, the project has only existed in various local notes and powerpoint documents, but I’m now starting to move things [into Github], and have also created a [Reddit] and [Slack]community for people who are interested in the project to gather. 
 
 The goal of Hive Commons is to enable a community of activists to pool their collective resources into a digital [commons]that is governed by a blockchain  governance system based on the principles of [Liquid Democracy]. As the resources within the commons grow and become more valuable, the community will be able to offer access to the commons as leverage for collective bargaining. 
 
@@ -68,5 +68,3 @@ Decentralized blockchain governance is an emerging area and there are many uncer
 Even if you don’t have any of the above skillsets, if you want help, I can guarantee that you have something to contribute—Sharing ideas, poking holes in existing  plans, and generally discussion the project are all important contributions as well. 
 
 **So whatever your skillset is, join the community and get involved.** We are on [Github](https://github.com/HiveCommons), [Medium](https://medium.com/hive-commons), [Reddit](https://www.reddit.com/r/HiveCommons/), and [Slack](https://hivecommons.herokuapp.com). 
-
-***Let’s change the world, together. ***
