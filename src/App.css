@@ -1,0 +1,93 @@
+/* PAGE */
+
+/*colour pallate: http://www.colourlovers.com/palette/1321158/milk_toast_honey
+
+light yellow: FFFDE0
+medium yellow: FCD036
+light orange: FAB22C
+medium orange: E88523
+dark orange: D9791A
+*/
+
+
+body,
+.pure-g [class*=pure-u] {
+  font-family: 'Open Sans', sans-serif;
+  background: #FFFDE0;
+}
+
+h1, h2, h3 {
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  color: #D9791A;
+}
+
+pre {
+  display: block;
+  margin: 20px 0 15px 0;
+  padding: 10px;
+  background: #eee;
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 45px 20px;
+  text-align: center;
+}
+
+.pure-button-primary {
+  background-color: #0c1a2b;
+}
+
+.pure-button-primary:hover {
+  background-color: #233e5e;
+}
+
+.pure-form input[type="text"]:focus {
+  border-color: #0c1a2b;
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: fixed;
+  padding: 5px;
+  background: #FCD036;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+}
+
+.navbar a {
+  color: #fff;
+}
+
+.navbar a:active,
+.navbar a:focus,
+.navbar a:hover {
+  background: #FAB22C;
+}
+
+.navbar .pure-menu-heading {
+  font-weight: bold;
+  text-transform: none;
+}
+
+.navbar .navbar-right {
+  float: right;
+}
+
+.navbar .uport-logo {
+  height: 16px;
+  margin-right: 10px;
+}
+
+/* HOME */
+.logo{
+  max-width: 100%;
+  margin-top: 1em;
+}
+
+.profile-logo{
+  max-height: 160px;
+  border-radius: 80px;
+  border: 2px solid #E88523;
+}
