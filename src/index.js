@@ -11,6 +11,8 @@ import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import Profile from './user/layouts/profile/Profile'
 import Hive from './layouts/hive/Hive'
+import AddHive from './layouts/hive/addHive'
+import Faucet from  './layouts/faucet/Faucet'
 
 // Redux Store
 import store from './store'
@@ -22,10 +24,10 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
-          <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
-          // <Route path="hive/:name" component={UserIsAuthenticated(Hive)} />
-          <Route path="hive/:name" component={Hive} />
+          <Route path="hive/new" component={AddHive} />
+          <Route path="hive/:name" component={Hive} />          
+          <Route path="faucet/:name" component={Faucet} />
         </Route>
       </Router>
     </Provider>
