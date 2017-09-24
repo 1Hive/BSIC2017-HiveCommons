@@ -3,20 +3,7 @@ import { Link } from 'react-router'
 
 import hiveLogo from '../../img/hive-logo.png'
 
-const dummyData = [
-  {key: '1', name: 'United Nations', description: 'This is the UN. We like pizza.' , link: 'unitednations'},
-  {key: '2', name: 'Pizza Town', description: 'This is the UN. We like pizza.' , link: 'pizzatown'}
-]
-
-const listItems = dummyData.map((item)=>
-  <tr key={item.key}>
-    <td>{item.name}</td>
-    <td>{item.description}</td>
-    <td>
-      <Link className="pure-button" to={'hive/' + item.link}>View</Link>
-    </td>
-  </tr>
-)
+import HiveList from '../hives/HiveList'
 
 class Home extends Component {
   render() {
@@ -33,20 +20,7 @@ class Home extends Component {
 
             <hr></hr>
 
-            <table className="pure-table pure-table-horizontal">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {listItems}
-              </tbody>
-
-            </table>
+            <HiveList/>
 
           </div>
         </div>

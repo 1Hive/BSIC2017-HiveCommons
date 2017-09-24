@@ -30,7 +30,7 @@ export function loginUser() {
 
       console.log("requestCredentials")
 
-      return browserHistory.push('/dashboard')
+      return
     })
   }
 }

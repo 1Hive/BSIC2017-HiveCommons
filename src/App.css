@@ -91,3 +91,10 @@ pre {
   border-radius: 80px;
   border: 2px solid #E88523;
 }
+
+/*Faucet*/
+
+.pure-button .uport-logo {
+  height: 16px;
+  margin-right: 10px;
+}

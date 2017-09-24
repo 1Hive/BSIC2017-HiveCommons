@@ -10,9 +10,11 @@ import App from './App'
 import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import Profile from './user/layouts/profile/Profile'
-import Hive from './layouts/hive/Hive'
-import AddHive from './layouts/hive/addHive'
-import Faucet from  './layouts/faucet/Faucet'
+import Hives from './layouts/hives/Hives'
+import Hive from './layouts/hives/Hive'
+import AddHive from './layouts/hives/AddHive'
+import HoneyFaucet from  './layouts/faucet/HoneyFaucet'
+import BeeFaucet from  './layouts/faucet/BeeFaucet'
 
 // Redux Store
 import store from './store'
@@ -25,9 +27,13 @@ ReactDOM.render((
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
-          <Route path="hive/new" component={AddHive} />
-          <Route path="hive/:name" component={Hive} />          
-          <Route path="faucet/:name" component={Faucet} />
+
+          <Route path="hives" component={Hives} />
+          <Route path="hives/new" component={AddHive} />
+          <Route path="hives/:name" component={Hive} />
+
+          <Route path="faucet/bee" component={BeeFaucet} />
+          <Route path="faucet/hny" component={HoneyFaucet} />
         </Route>
       </Router>
     </Provider>

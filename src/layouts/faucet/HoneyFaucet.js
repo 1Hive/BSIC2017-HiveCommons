@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router'
 
-class Faucet extends Component {
+class HoneyFaucet extends Component {
   constructor(props, {authData}) {
     super(props)
     authData = this.props
@@ -12,8 +12,8 @@ class Faucet extends Component {
       <main className = "container">
         <div className = "pure-g">
           <div className = "pure-u-1-1">
-            <h1> Faucet - {this.props.params.name}</h1>
-            <button className="pure-button button-xlarge">Get Tokens</button>
+            <h1> HNY Faucet </h1>
+            <p>Convert BEE tokens to HNY tokens</p>
           </div>
         </div>
      </main>
@@ -21,4 +21,4 @@ class Faucet extends Component {
   }
 }
 
-export default Faucet
+export default HoneyFaucet
