@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use(express.static('build_webpack'))
 
-server.get('/*', function(req, res){
+app.get('/*', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
