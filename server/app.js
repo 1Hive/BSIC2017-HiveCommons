@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static('build_webpack'))
 
 app.get('/*', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile('index.html', { root: './build_webpack'});
 });
 
 
