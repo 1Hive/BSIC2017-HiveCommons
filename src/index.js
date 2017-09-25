@@ -16,6 +16,8 @@ import AddHive from './layouts/hives/AddHive'
 import HoneyFaucet from  './layouts/faucet/HoneyFaucet'
 import BeeFaucet from  './layouts/faucet/BeeFaucet'
 
+import Page404 from  './layouts/errors/404'
+
 // Redux Store
 import store from './store'
 
@@ -34,6 +36,7 @@ ReactDOM.render((
 
           <Route path="faucet/bee" component={BeeFaucet} />
           <Route path="faucet/hny" component={HoneyFaucet} />
+          <Route path='*' exact={true} component={Page404} />
         </Route>
       </Router>
     </Provider>
