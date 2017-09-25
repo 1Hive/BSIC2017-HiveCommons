@@ -1,6 +1,5 @@
 {
   "name": "hiveCommons",
-  "homepage": "https://magrelo.github.io/hiveCommons",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -51,6 +50,12 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.5",
+    "helmet": "^3.8.1",
+    "method-override": "^2.3.9",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
@@ -65,7 +70,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "deploy": "npm run build&&gh-pages -d build_webpack"
+    "server": "node server/app.js"
   },
   "jest": {
     "collectCoverageFrom": [
