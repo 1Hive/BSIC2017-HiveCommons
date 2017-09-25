@@ -16,7 +16,7 @@ class Home extends Component {
             <h1 hidden>Hive Commons</h1>
             <h2>Tokenize Public Interest</h2>
 
-            <Link to="hive/new" className="pure-button">Add new Hive</Link>
+            <Link to="hives/new" className="pure-button">Add new Hive</Link>
 
             <hr></hr>
 
