@@ -57,7 +57,6 @@ contract("MiniMeToken", accounts => {
     describe("transfer(address to, uint256 amount)", () => {
 
         it("increases in gas cost the first time miniMeToken is copied", async () => {
-
             const tx = await miniMeToken.transfer(accounts[1], 100)
             assert.equal(tx.receipt.gasUsed, 100134, "Gas use for first transfer is unexpected")
 

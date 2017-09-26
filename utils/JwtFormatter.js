@@ -14,5 +14,5 @@ exports.format = jwt => {
     const jwtSigRHex = "0x" + jwtSignature.r.toString("hex")
     const jwtSigSHex = "0x" + jwtSignature.s.toString("hex")
 
-    return {sha256jwtMessagePart, jwtMessagePart, jwtSigRHex, jwtSigSHex}
+    return {sha256jwtMessagePart, jwtSigRHex, jwtSigSHex}
 }
