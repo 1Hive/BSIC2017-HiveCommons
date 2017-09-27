@@ -11,6 +11,12 @@ import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
+import {loadWeb3} from "./web3/getWeb3";
+import {createDependencies} from "./web3/dependencies";
+
+// Not sure where the best place to instantiate dependencies is, feel free to move somewhere more appropriate.
+loadWeb3
+    .then(web3 => createDependencies(web3))
 
 class App extends Component {
   render() {
