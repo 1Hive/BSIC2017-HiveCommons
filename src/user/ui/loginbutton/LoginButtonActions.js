@@ -16,12 +16,11 @@ export function loginUser() {
     uport.requestCredentials({
       requested: ['name', 'avatar', 'phone', 'country'],
       notifications: true, // We want this if we want to recieve credentials
-        // We need the JWT field from the object specified here to claim Bee.
-        verified: ["Uniqueness"]
+      verified: ["Uniqueness"] // We need the JWT field from the object specified here to claim Bee.
     }).then((credentials) => {
 
-        // Check out the console to see what data we get from uPort. We need to save it somewhere for use when we want to claim Bee.
-        console.log(credentials)
+      // Check out the console to see what data we get from uPort. We need to save it somewhere for use when we want to claim Bee.
+      console.log(credentials)
 
       dispatch(userLoggedIn(credentials))
 
