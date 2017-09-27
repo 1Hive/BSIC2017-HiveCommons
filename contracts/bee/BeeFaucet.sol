@@ -3,7 +3,7 @@ pragma solidity ^0.4.15;
 import "./MiniMeToken.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
-// Would rather the attestation/JWT verification was a library, but for speed of development it will be integrated for now.
+// TODO: Restrict to certain periods and add more tests. kycProviderPublicAddress address also needs to be editable by owner.
 contract BeeFaucet is Ownable {
 
     MiniMeToken private beeToken;
@@ -24,8 +24,11 @@ contract BeeFaucet is Ownable {
     }
 
     /**
-     *  @notice Have a Bee token sent to the senders account if the attestation is valid, should probably submit the sha256
-                of the message instead of the jwtMessage part.
+     *  @notice Have a Bee token sent to the senders account if the attestation is valid
+     *  @param jwtMessageHash sha256 hash of the first two parts of the JWT
+     *  @param v elliptic curve signature v value
+     *  @param r elliptic curve signature r value
+     *  @param s elliptic curve signature s value
      */
     function claimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public notAlreadyClaimed(jwtMessageHash) {
 
@@ -39,4 +42,5 @@ contract BeeFaucet is Ownable {
         beeToken.generateTokens(msg.sender, 1);
         LogBeeClaimed(msg.sender);
     }
+
 }
