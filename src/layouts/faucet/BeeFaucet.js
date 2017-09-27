@@ -63,16 +63,16 @@ class BeeFaucet extends Component {
       </div>
 
     return (
-      <main className = "container">
-        <div className = "pure-g">
-          <div className = "pure-u-1-1">
+      <main className="container">
+        <div className="pure-g">
+          <div className="pure-u-1-1">
             <h1> Bee Faucet</h1>
-            <OnlyGuestLinks />
-            <OnlyAuthLinks />
+            <OnlyGuestLinks/>
+            <OnlyAuthLinks/>
             <AttestationLink/>
           </div>
         </div>
-     </main>
+      </main>
     )
   }
 }
