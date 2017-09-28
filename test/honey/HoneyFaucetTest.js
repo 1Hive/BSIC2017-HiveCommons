@@ -79,7 +79,7 @@ contract("HoneyFaucet", accounts => {
 
         it("creates an accurate clone of Bee token", async () => {
             await honeyFaucet.createFaucet()
-            beeTokenCloneAddress = await honeyFaucet.getBeeTokenCloneAddress()
+            const beeTokenCloneAddress = await honeyFaucet.getBeeTokenCloneAddress()
             const beeTokenClone = MiniMeToken.at(beeTokenCloneAddress)
             const beeTokenCloneBalance = await beeTokenClone.balanceOf(beeOwner1)
 
@@ -126,7 +126,7 @@ contract("HoneyFaucet", accounts => {
 
         it ("awards correct amount of Honey to multiple claimers", async () => {
             const expectedClaimAmount = 6.25e+23;
-            grantBeeTokenToAccount(beeOwner2, jwtWithValidSignature2)
+            await grantBeeTokenToAccount(beeOwner2, jwtWithValidSignature2)
             await honeyFaucet.createFaucet()
             await honeyFaucet.claimHoney({from: beeOwner1})
             await honeyFaucet.claimHoney({from: beeOwner2})

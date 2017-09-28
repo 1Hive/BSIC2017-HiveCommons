@@ -18,7 +18,7 @@ module.exports = async (deployer) => {
 const initDistributionAndTransferOwnership = async () => {
     const honeyToken = await HoneyToken.deployed()
     await honeyToken.mint(web3.eth.accounts[0], 10 ** 26) // 10^18(token decimal places)+8(multiplier of tokens) = 100000000 initial tokens
-    console.log("Successfully granted initial 100000000 tokens to account 0")
+    // console.log("Successfully granted initial 100000000 tokens to account 0")
     await honeyToken.transferOwnership(HoneyFaucet.address)
-    console.log("Transferred ownership/minting privilege of HoneyToken to HoneyFaucet")
+    // console.log("Transferred ownership/minting privilege of HoneyToken to HoneyFaucet")
 }
