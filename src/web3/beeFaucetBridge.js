@@ -1,9 +1,8 @@
-import {web3} from "../util/connectors.js"
 import {getWeb3} from "./getWeb3.js"
 import Contract from "truffle-contract"
 import BeeFaucet from "../../build/contracts/BeeFaucet.json"
 import MiniMeToken from "../../build/contracts/MiniMeToken.json"
-import {format as jwtFormat} from "../../utils/JwtFormatter.js"
+import {formatJwt} from "../../utils/ValidationUtils.js"
 
 export class BeeFaucetBridge {
 
@@ -24,7 +23,7 @@ export class BeeFaucetBridge {
     }
 
     claimBeeToken(jwt) {
-        const formattedJwt = jwtFormat(jwt)
+        const formattedJwt = formatJwt(jwt)
         return this.beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
             {from: this.web3.eth.coinbase, gas: 2000000})
     }

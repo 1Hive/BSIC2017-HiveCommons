@@ -26,7 +26,7 @@ class BeeFaucet extends Component {
           // The first account in the returned array is the one that is used for everything unless specified otherwise.
 
           // Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
-          beeFaucetBridge.claimBeeToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiIyb3Zvb2ZHWVVwcTZHRjZKa042NHFnQjRodmZSTnZ5YW51diIsImNsYWltIjp7IlVuaXF1ZW5lc3MiOiJJcyBVbmlxdWUgLyBIYXNoIG9mIHRoZWlyIHBhc3Nwb3J0IG51bWJlciJ9LCJleHAiOjE1MzgwNjE3Njc3NjgsImlzcyI6IjJvdHdrSnF2RzhtNWR0OVJldlFHaUhYR2gzTmV6MWk3S0RXIiwiaWF0IjoxNTA2NTI1NzY3NzY5fQ.fP3lyuSPf1QYOiQmAP3gAN6tpFgJJuRDPnMj9k8AoaWarMgwYym_0QP4nZNI3v1hhToeMbtgdemFvQTIe1mx2w")
+          beeFaucetBridge.claimBeeToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiIyb2Z5THlxZXRhSFpCMnBta2RYZm1icUNMelQ1QkpFTFZOMiIsImNsYWltIjp7IlVuaXF1ZW5lc3MiOiJJcyBVbmlxdWUgLyBIYXNoIG9mIHRoZWlyIHBhc3Nwb3J0IG51bWJlciJ9LCJleHAiOjE1MzgxNTA3Mjc4ODIsImlzcyI6IjJvdHdrSnF2RzhtNWR0OVJldlFHaUhYR2gzTmV6MWk3S0RXIiwiaWF0IjoxNTA2NjE0NzI3ODgyfQ._XC-zNLpVrLC5T8nwWI9Xou4qHNR9GXtB252nCW5VgFORAuBVx2jZzuwkG-7uF_f3px1gkAO2vGWPM8EDdAxvQ")
             .then(() => {
               console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
               return web3Bridge.getUsersAccounts()
@@ -52,7 +52,7 @@ class BeeFaucet extends Component {
         <button className="pure-button button-xlarge" onClick={() => {
 
           // Put 'address' from 'requestCredentials() response here, forgot how to grab the state...
-          generateUniquenessAttestation("2ovoofGYUpq6GF6JkN64qgB4hvfRNvyanuv")
+          generateUniquenessAttestation("2ofyLyqetaHZB2pmkdXfmbqCLzT5BJELVN2")
 
         }}>
           Create Attestation for logged in user

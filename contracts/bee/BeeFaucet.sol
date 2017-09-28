@@ -25,7 +25,10 @@ contract BeeFaucet is Ownable {
     }
 
     /**
-     *  @notice Have a Bee token sent to the senders account if the attestation is valid
+     *  @notice Have a Bee token sent to the senders account if the attestation is valid.
+     *          Can only be called once for each valid jwtMessageHash. This could be updated to include
+     *          a hash of the users personal ID/passport number as the claimable item. In this case we would
+     *          need to do more processing of the JWT message to ensure the ID number came from it.
      *  @param jwtMessageHash sha256 hash of the first two parts of the JWT
      *  @param v elliptic curve signature v value
      *  @param r elliptic curve signature r value
