@@ -4,6 +4,7 @@ import "./MiniMeToken.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 // TODO: Restrict to certain periods and add more tests. kycProviderPublicAddress address also needs to be editable by owner.
+// Should also up upgradable somehow (not sure how yet) as verification process could change in the future.
 contract BeeFaucet is Ownable {
 
     MiniMeToken private beeToken;

@@ -1,6 +1,7 @@
 // This has been tested with the real Ethereum network and Testrpc.
 // Copied and edited from: https://gist.github.com/xavierlepretre/d5583222fde52ddfbc58b7cfa0d2d0a9
-exports.assertThrows = (contractMethodCall, maxGasAvailable) => {
+
+assertThrowsMessage = (contractMethodCall, maxGasAvailable, assertMessage) => {
     return new Promise((resolve, reject) => {
         try {
             resolve(contractMethodCall())
@@ -9,7 +10,7 @@ exports.assertThrows = (contractMethodCall, maxGasAvailable) => {
         }
     })
         .then(tx => {
-            assert.equal(tx.receipt.gasUsed, maxGasAvailable, "Tx successful, the max gas available was not consumed")
+            assert.equal(tx.receipt.gasUsed, maxGasAvailable, assertMessage)
         })
         .catch(error => {
             if ((error + "").indexOf("invalid opcode") < 0 && (error + "").indexOf("out of gas") < 0) {
@@ -20,6 +21,10 @@ exports.assertThrows = (contractMethodCall, maxGasAvailable) => {
             }
         })
 }
+exports.assertThrowsMessage = assertThrowsMessage
+
+exports.assertThrows = (contractMethodCall, maxGasAvailable) =>
+    assertThrowsMessage(contractMethodCall, maxGasAvailable, "Tx successful, the max gas available was not consumed")
 
 exports.listenForEvent = event => new Promise((resolve, reject) => {
     event.watch((error, response) => {
@@ -41,3 +46,6 @@ exports.convertToPromise = functionWithCallbackParam => new Promise((resolve, re
         }
     })
 })
+
+exports.increaseTestRpcTime = (web3, seconds) =>
+    web3.currentProvider.send({jsonrpc: "2.0", method: "evm_increaseTime", params: [seconds], id: 0})
