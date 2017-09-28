@@ -1,9 +1,11 @@
-import {Web3Bridge} from "./web3Bridge.js"
-import {BeeFaucetBridge} from "./beeFaucetBridge";
+import Web3Bridge from "./web3Bridge.js"
+import BeeTokenBridge from "./beeFaucetBridge";
+import HoneyTokenBridge from "./honeyTokenBridge";
 
-export let beeFaucetBridge, web3Bridge
+export let web3Bridge, beeTokenBridge, honeyTokenBridge
 
 export const createDependencies = web3 => {
     web3Bridge = new Web3Bridge(web3)
-    beeFaucetBridge = new BeeFaucetBridge(web3)
+    beeTokenBridge = new BeeTokenBridge(web3)
+    honeyTokenBridge = new HoneyTokenBridge(web3)
 }

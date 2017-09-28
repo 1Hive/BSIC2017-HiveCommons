@@ -1,10 +1,9 @@
-import {getWeb3} from "./getWeb3.js"
 import Contract from "truffle-contract"
 import BeeFaucet from "../../build/contracts/BeeFaucet.json"
 import MiniMeToken from "../../build/contracts/MiniMeToken.json"
 import {formatJwt} from "../../utils/ValidationUtils.js"
 
-export class BeeFaucetBridge {
+export default class BeeTokenBridge {
 
     constructor(web3) {
         const beeFaucet = Contract(BeeFaucet)

@@ -1,6 +1,6 @@
 import {convertToPromise} from "../../utils/Utils.js"
 
-export class Web3Bridge {
+export default class Web3Bridge {
 
     constructor(web3) {
         this.web3 = web3
