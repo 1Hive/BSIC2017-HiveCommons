@@ -13,6 +13,11 @@ contract BeeFaucet is Ownable {
 
     event LogBeeClaimed(address receiver);
 
+    /**
+     * @notice Create the BeeFaucet contract.
+     * @param _miniMeTokenFactoryAddress Address of the MiniMeTokenFactory contract
+     * @param _appPublicAddress Public address of the uPort app used for verifying attestations granted by that app.
+     */
     function BeeFaucet(address _miniMeTokenFactoryAddress, address _appPublicAddress) {
         beeToken = new MiniMeToken(_miniMeTokenFactoryAddress, 0, 0, "Bee", 18, "BEE", true);
         kycProviderPublicAddress = _appPublicAddress;
@@ -25,14 +30,14 @@ contract BeeFaucet is Ownable {
     }
 
     /**
-     *  @notice Have a Bee token sent to the senders account if the attestation is valid.
-     *          Can only be called once for each valid jwtMessageHash. This could be updated to include
-     *          a hash of the users personal ID/passport number as the claimable item. In this case we would
-     *          need to do more processing of the JWT message to ensure the ID number came from it.
-     *  @param jwtMessageHash sha256 hash of the first two parts of the JWT
-     *  @param v elliptic curve signature v value
-     *  @param r elliptic curve signature r value
-     *  @param s elliptic curve signature s value
+     * @notice Have a Bee token sent to the senders account if the attestation is valid.
+     *         Can only be called once for each valid jwtMessageHash. This could be updated to include
+     *         a hash of the users personal ID/passport number as the claimable item. In this case we would
+     *         need to do more processing of the JWT message to ensure the ID number came from it.
+     * @param jwtMessageHash sha256 hash of the first two parts of the JWT
+     * @param v elliptic curve signature v value
+     * @param r elliptic curve signature r value
+     * @param s elliptic curve signature s value
      */
     function claimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public notAlreadyClaimed(jwtMessageHash) {
 

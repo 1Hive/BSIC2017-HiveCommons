@@ -12,6 +12,11 @@ contract HoneyFaucet {
     uint public faucetEndTime;
     uint public honeyForBeeRate;
 
+    /**
+     * @notice Create the Honey Faucet contract. This does not initialise the faucet to do that call createFaucet()
+     * @param honeyTokenAddress Address of the HoneyToken contract
+     * @param beeFaucetAddress Address of the BeeFaucet contract
+     */
     function HoneyFaucet(address honeyTokenAddress, address beeFaucetAddress) {
         honeyToken = HoneyToken(honeyTokenAddress);
         beeFaucet = BeeFaucet(beeFaucetAddress);
@@ -55,6 +60,7 @@ contract HoneyFaucet {
      * @notice Allows the owner of one or more Bee tokens to destroy them in return for Honey tokens.
      *         The owner must have had Bee in the calling account at the time createFaucet() is successfully executed.
      *         Honey tokens are granted to the sending accounts balance.
+     *         Ownership/minting privilege of the HoneyToken must have been transferred to the HoneyFaucet contract after initial distribution.
      */
     function claimHoney() public hasBee {
         uint sendersAccountBeeBalance = beeTokenClone.balanceOf(msg.sender);
