@@ -30,6 +30,15 @@ contract BeeFaucet is Ownable {
     }
 
     /**
+     * @notice Update the public address used for verifying attestations. Note we may allow multiple attestation
+     *         sources so this could be extended to add/remove from a mapping of valid public addresses
+     * @param _kycProviderPublicAddress The new public address for verifying attestations.
+     */
+    function updateKycProviderPublicAddress(address _kycProviderPublicAddress) public onlyOwner {
+        kycProviderPublicAddress = _kycProviderPublicAddress;
+    }
+
+    /**
      * @notice Have a Bee token sent to the senders account if the attestation is valid.
      *         Can only be called once for each valid jwtMessageHash. This could be updated to include
      *         a hash of the users personal ID/passport number as the claimable item. In this case we would
