@@ -55,7 +55,7 @@ contract("HoneyFaucet", accounts => {
             await honeyFaucet.createFaucet()
             const faucetEndTime = await honeyFaucet.faucetEndTime()
 
-            assert.equal(faucetEndTime, expectedEndTime, "Faucet end time is not equal to expected end time")
+            assert.closeTo(faucetEndTime.toNumber(), expectedEndTime, 2, "Faucet end time is not equal to expected end time")
         })
 
         it("creates a new faucet with correct end time when old faucet has expired", async () => {

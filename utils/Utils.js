@@ -9,3 +9,9 @@ exports.convertToPromise = functionWithCallbackParam => new Promise((resolve, re
     }
   })
 })
+
+// 'verified.0.claim.jwt'
+exports.getJwtForAttestation = (verifiedAttestationsList, attestation) =>
+  verifiedAttestationsList
+    .filter(_attestation => attestation in _attestation.claim)[0]
+    .jwt
