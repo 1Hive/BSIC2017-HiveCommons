@@ -56,6 +56,9 @@ const BeeFaucetInner = ({userData, balance, updateBeeBalance}) => {
       <br/>
       Note that this would actually be granted to the user by a third party / KYC provider.
       <br/> This only needs to be done once for the app that's registered in this web app.
+      <br/>
+      <br/>Once an attestation has been granted the user needs to refresh this screen and
+      <br/>log back into their uPort account before they can claim a BEE token.
     </div>
 
   const BeeBalance = () =>

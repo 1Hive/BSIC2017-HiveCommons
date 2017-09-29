@@ -37,7 +37,7 @@ const HoneyFaucetInner = ({honeyBalance, updateHoneyBalance}) => {
             <br/>
             It should not be called until everyone has claimed their BEE tokens.
             <br/>
-            BEE tokens claimed after faucet creation cannot claim in from that faucet.
+            BEE tokens claimed after faucet creation cannot claim from that faucet.
         </div>
 
     return (
