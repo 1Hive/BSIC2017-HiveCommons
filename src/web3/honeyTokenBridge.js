@@ -19,7 +19,7 @@ export default class HoneyTokenBridge {
     // Note, these all return promises. The ones that create Ethereum transactions (createFaucet
     // and claimHoney) return (call their callbacks) once the transaction has mined on the blockchain.
     getBalance() {
-        return this.honeyToken.balanceOf(web3.eth.coinbase)
+        return this.honeyToken.balanceOf(this.web3.eth.coinbase)
     }
 
     createFaucet() {
