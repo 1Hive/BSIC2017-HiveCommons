@@ -1,32 +1,39 @@
 import Contract from "truffle-contract"
 import HoneyToken from "../../build/contracts/HoneyToken.json"
 import HoneyFaucet from "../../build/contracts/HoneyFaucet.json"
+import * as Rx from "rxjs";
 
 export default class HoneyTokenBridge {
 
     constructor(web3) {
         const honeyToken = Contract(HoneyToken)
         honeyToken.setProvider(web3.currentProvider)
-        honeyToken.deployed().then(_honeyToken => this.honeyToken = _honeyToken)
+        this.honeyToken$ = Rx.Observable
+            .fromPromise(honeyToken.deployed())
+            .shareReplay(1)
 
         const honeyFaucet = Contract(HoneyFaucet)
         honeyFaucet.setProvider(web3.currentProvider)
-        honeyFaucet.deployed().then(_honeyFaucet => this.honeyFaucet = _honeyFaucet)
+        this.honeyFaucet$ = Rx.Observable
+            .fromPromise(honeyFaucet.deployed())
+            .shareReplay(1)
 
         this.web3 = web3
     }
 
-    // Note, these all return promises. The ones that create Ethereum transactions (createFaucet
-    // and claimHoney) return (call their callbacks) once the transaction has mined on the blockchain.
     getBalance() {
-        return this.honeyToken.balanceOf(this.web3.eth.coinbase)
+        return this.honeyToken$
+            .flatMap(honeyToken => honeyToken.balanceOf(this.web3.eth.coinbase))
+            .map(balance => balance / 10**18)
     }
 
     createFaucet() {
-        return this.honeyFaucet.createFaucet({from: this.web3.eth.coinbase, gas: 2000000})
+        return this.honeyFaucet$
+            .flatMap(honeyFaucet => honeyFaucet.createFaucet({from: this.web3.eth.coinbase, gas: 2000000}))
     }
 
     claimHoney() {
-        return this.honeyFaucet.claimHoney({from: this.web3.eth.coinbase, gas: 2000000})
+        return this.honeyFaucet$
+            .flatMap(honeyFaucet => honeyFaucet.claimHoney({from: this.web3.eth.coinbase, gas: 2000000}))
     }
 }

@@ -3,13 +3,13 @@ import {HiddenOnlyAuth, VisibleOnlyAuth} from '../../util/wrappers.js'
 import {beeTokenBridge} from "../../web3/dependencies";
 import {generateUniquenessAttestation} from "../../web3/attestationBridge";
 import {connect} from "react-redux"
-import {updateBalance} from "./balanceActions"
+import {updateBeeBalance} from "./balanceActions"
 
 // UI Components
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
 import * as Utils from "../../../utils/Utils";
 
-const BeeFaucetInner = ({userData, balance, updateBalance}) => {
+const BeeFaucetInner = ({userData, balance, updateBeeBalance}) => {
 
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <div>
@@ -26,7 +26,7 @@ const BeeFaucetInner = ({userData, balance, updateBalance}) => {
         beeTokenBridge.claimBeeToken(Jwt)
           .subscribe(() => {
               console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-              updateBalance(event)
+              updateBeeBalance()
             }
           )
 
@@ -60,7 +60,7 @@ const BeeFaucetInner = ({userData, balance, updateBalance}) => {
 
   const BeeBalance = () =>
     <div>
-      Bee Balance: {balance.balance ? balance.balance.toNumber() : "loading"}
+      Bee Balance: {balance.beeBalance ? balance.beeBalance.toNumber() : "loading"}
     </div>
 
   return (
@@ -80,12 +80,12 @@ const BeeFaucetInner = ({userData, balance, updateBalance}) => {
 
 const mapStateToProps = state => ({
   userData: state.user.data,
-  balance: state.balance
+  balance: state.beeBalance
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateBalance: () => {
-    dispatch(updateBalance())
+  updateBeeBalance: () => {
+    dispatch(updateBeeBalance())
   }
 })
 

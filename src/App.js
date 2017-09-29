@@ -14,7 +14,7 @@ import './App.css'
 import {loadWeb3} from "./web3/getWeb3";
 import {createDependencies} from "./web3/dependencies";
 import store from "./store";
-import {updateBalance, updatedBalance} from "./layouts/faucet/balanceActions";
+import {updateBeeBalance, updateHoneyBalance} from "./layouts/faucet/balanceActions";
 
 // Not sure where the best place to instantiate dependencies is.
 // This is a slow process though and should be moved somewhere where it doesn't effect start up time.
@@ -27,7 +27,8 @@ import {updateBalance, updatedBalance} from "./layouts/faucet/balanceActions";
 loadWeb3
     .then(web3 => {
       createDependencies(web3)
-      store.dispatch(updateBalance())
+      store.dispatch(updateBeeBalance())
+      store.dispatch(updateHoneyBalance())
     })
 
 class App extends Component {

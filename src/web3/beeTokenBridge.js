@@ -4,7 +4,6 @@ import MiniMeToken from "../../build/contracts/MiniMeToken.json"
 import {formatJwt} from "../../utils/ValidationUtils.js"
 import * as Rx from "rxjs";
 
-
 export default class BeeTokenBridge {
 
     constructor(web3) {
