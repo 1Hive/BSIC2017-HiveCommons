@@ -1,14 +1,15 @@
 import React from 'react'
 import {HiddenOnlyAuth, VisibleOnlyAuth} from '../../util/wrappers.js'
-import {beeTokenBridge, web3Bridge} from "../../web3/dependencies";
+import {beeTokenBridge} from "../../web3/dependencies";
 import {generateUniquenessAttestation} from "../../web3/attestationBridge";
 import {connect} from "react-redux"
+import {updateBalance} from "./balanceActions"
 
 // UI Components
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
 import * as Utils from "../../../utils/Utils";
 
-const BeeFaucetInner = ({userData}) => {
+const BeeFaucetInner = ({userData, balance, updateBalance}) => {
 
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <div>
@@ -23,12 +24,11 @@ const BeeFaucetInner = ({userData}) => {
         const Jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
 
         beeTokenBridge.claimBeeToken(Jwt)
-          .then(() => {
-            console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-            return web3Bridge.getUsersAccounts()
-          })
-          .then(accounts => beeTokenBridge.getBeeTokenBalance(accounts[0]))
-          .then(balance => console.log("Users BEE balance: " + balance))
+          .subscribe(() => {
+              console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
+              updateBalance(event)
+            }
+          )
 
       }}>Claim BEE Token
       </button>
@@ -58,6 +58,11 @@ const BeeFaucetInner = ({userData}) => {
       <br/> This only needs to be done once for the app that's registered in this web app.
     </div>
 
+  const BeeBalance = () =>
+    <div>
+      Bee Balance: {balance.balance ? balance.balance.toNumber() : "loading"}
+    </div>
+
   return (
     <main className="container">
       <div className="pure-g">
@@ -65,6 +70,7 @@ const BeeFaucetInner = ({userData}) => {
           <h1> Bee Faucet</h1>
           <OnlyGuestLinks/>
           <OnlyAuthLinks/>
+          <BeeBalance/>
           <AttestationLink/>
         </div>
       </div>
@@ -73,9 +79,16 @@ const BeeFaucetInner = ({userData}) => {
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.data
+  userData: state.user.data,
+  balance: state.balance
 })
 
-const BeeFaucet = connect(mapStateToProps)(BeeFaucetInner)
+const mapDispatchToProps = dispatch => ({
+  updateBalance: () => {
+    dispatch(updateBalance())
+  }
+})
+
+const BeeFaucet = connect(mapStateToProps, mapDispatchToProps)(BeeFaucetInner)
 
 export default BeeFaucet
