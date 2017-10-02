@@ -461,8 +461,8 @@
         }
       },
       "links": {},
-      "address": "0x19b80f6c01fde4433e79e150fe98ecc02181b8b5",
-      "updated_at": 1506979628941
+      "address": "0x44ff18d04b4bc7e45abcee62105d0c9892a4cebb",
+      "updated_at": 1506983499383
     },
     "1506688968095": {
       "links": {},
@@ -1098,10 +1098,10 @@
         }
       },
       "links": {},
-      "address": "0x3439034f5006b890cd7ce032bcb7f0b1d609395b",
-      "updated_at": 1506981897619
+      "address": "0x94b10d075742339f4d4a4d49e46be98cc56658aa",
+      "updated_at": 1506983113809
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1506981897619
+  "updated_at": 1506983499383
 }

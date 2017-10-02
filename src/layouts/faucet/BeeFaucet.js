@@ -37,7 +37,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
         }}>Claim BEE Token
         </button>
 
-        : "Bee has been claimed"}
+          : <p>Bee has been claimed for this user</p>}
 
     </div>
   )
