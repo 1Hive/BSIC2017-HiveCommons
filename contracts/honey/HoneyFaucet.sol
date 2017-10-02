@@ -1,28 +1,28 @@
 pragma solidity ^0.4.15;
 
+import "../FaucetPeriod.sol";
 import "./HoneyToken.sol";
 import "../bee/BeeFaucet.sol";
 import "../bee/MiniMeToken.sol";
 
-contract HoneyFaucet {
+contract HoneyFaucet is FaucetPeriod {
 
     HoneyToken private honeyToken;
     BeeFaucet private beeFaucet;
     MiniMeToken private beeTokenClone;
-    uint public faucetEndTime;
     uint public honeyForBeeRate;
 
     /**
-     * @notice Create the Honey Faucet contract. This does not initialise the faucet to do that call createFaucet()
+     * @notice Create the Honey Faucet contract and set the faucet peiod length.
+     *         This does not initialise the faucet, to do that call createFaucet().
      * @param honeyTokenAddress Address of the HoneyToken contract
      * @param beeFaucetAddress Address of the BeeFaucet contract
      */
     function HoneyFaucet(address honeyTokenAddress, address beeFaucetAddress) {
         honeyToken = HoneyToken(honeyTokenAddress);
         beeFaucet = BeeFaucet(beeFaucetAddress);
+        setFaucetPeriodLength(2628000); // 1 month in seconds
     }
-
-    modifier noCurrentFaucet() { require(now > faucetEndTime); _; }
 
     modifier hasBee() { require(beeTokenClone.balanceOf(msg.sender) > 0); _; }
 
@@ -35,23 +35,28 @@ contract HoneyFaucet {
     }
 
     /**
-     * @notice Creates a faucet for the distribution of Honey.
+     * @notice Overrides abstract setupFaucet() in FaucetPeriod.
+     *         Creates a faucet for the distribution of Honey.
      *         Can be called once a month resetting individual's allowances.
      *         Will fail if no Bee tokens have been claimed yet. eg beeToken.totalSupply() == 0
      */
-    function createFaucet() public noCurrentFaucet {
-        // Should probably use block height but it's harder to test so we'll use block time for now.
-        faucetEndTime = now + 2628000; // 1 month in seconds
+    function setupFaucet() internal {
+        cloneBeeToken();
+        setHoneyForBeeRate();
+    }
 
+    function cloneBeeToken() private {
         MiniMeToken beeToken = MiniMeToken(beeFaucet.getBeeTokenAddress());
         address beeTokenCloneAddress = beeToken.createCloneToken("Honey Faucet Bee Token Clone", 18, "BEC", 0, false);
         beeTokenClone = MiniMeToken(beeTokenCloneAddress);
+    }
 
+    function setHoneyForBeeRate() private {
         uint totalHoney = honeyToken.totalSupply();
-        // Ultimately this works out at more than 15% a year but keeping track of the year or doing more complex math is out of scope for now.
+        // This works out at more than 15% a year but keeping track of the year or doing more complex math is out of scope for now.
         uint yearlyIncrease = (totalHoney / 100) * 15; // 15% of current supply.
         uint currentFaucetTotalDistribution = yearlyIncrease / 12; // monthly increase, current faucet supply.
-        uint currentFaucetTotalBee = beeToken.totalSupply();
+        uint currentFaucetTotalBee = beeTokenClone.totalSupply();
 
         honeyForBeeRate = currentFaucetTotalDistribution / currentFaucetTotalBee;
     }

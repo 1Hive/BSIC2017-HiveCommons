@@ -1,32 +1,44 @@
 pragma solidity ^0.4.15;
 
-import "./MiniMeToken.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../FaucetPeriod.sol";
+import "./MiniMeToken.sol";
 
-// TODO: Restrict to certain periods and add more tests. kycProviderPublicAddress address also needs to be editable by owner.
-// Should also up upgradable somehow (not sure how yet) as verification process could change in the future.
-contract BeeFaucet is Ownable {
+// TODO: Should be up upgradable somehow (not sure how yet) as verification process could change in the future.
+contract BeeFaucet is Ownable, FaucetPeriod {
 
     MiniMeToken private beeToken;
+    address private miniMeTokenFactoryAddress;
     address public kycProviderPublicAddress; // For verifying attestations to individuality.
     mapping(bytes32 => bool) public claimedAttestations;
 
     event LogBeeClaimed(address receiver);
 
     /**
-     * @notice Create the BeeFaucet contract.
+     * @notice Create the BeeFaucet contract and set the faucet period length.
      * @param _miniMeTokenFactoryAddress Address of the MiniMeTokenFactory contract
      * @param _appPublicAddress Public address of the uPort app used for verifying attestations granted by that app.
      */
     function BeeFaucet(address _miniMeTokenFactoryAddress, address _appPublicAddress) {
+        miniMeTokenFactoryAddress = _miniMeTokenFactoryAddress;
         beeToken = new MiniMeToken(_miniMeTokenFactoryAddress, 0, 0, "Bee", 18, "BEE", true);
         kycProviderPublicAddress = _appPublicAddress;
+        setFaucetPeriodLength(31540000); // ~ 1 year in seconds
     }
 
     modifier notAlreadyClaimed(bytes32 jwtMessageHash) { require(!claimedAttestations[jwtMessageHash]); _; }
 
     function getBeeTokenAddress() constant public returns (address) {
         return address(beeToken);
+    }
+
+    /**
+     * @notice Overrides abstract setupFaucet() in FaucetPeriod.
+     *         Creates a new Bee token which once claimed can be used to claim Honey.
+     *         Can be called once a year resetting individual's allowances.
+     */
+    function setupFaucet() internal {
+        beeToken = new MiniMeToken(miniMeTokenFactoryAddress, 0, 0, "Bee", 18, "BEE", true);
     }
 
     /**

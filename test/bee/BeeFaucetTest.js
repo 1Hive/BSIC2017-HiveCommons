@@ -28,6 +28,50 @@ contract("BeeFaucet", accounts => {
             assert.equal(await beeToken.decimals(), 18, "Decimals is not 18")
             assert.equal(await beeToken.symbol(), "BEE", "Symbol is not BEE")
         })
+
+        it("sets kycProviderPublicAddress", async () => {
+            const actualKycProviderPublicAddress = await beeFaucet.kycProviderPublicAddress()
+            assert.equal(actualKycProviderPublicAddress, kycProviderPublicAddress, "Kyc public address is incorrect")
+        })
+    })
+
+    describe("createFaucet()", () => {
+
+        it("creates a new faucet with correct end time", async () => {
+            const currentBlockTime = web3.eth.getBlock("latest").timestamp
+            const expectedEndTime = currentBlockTime + 31540000
+            await beeFaucet.createFaucet()
+            const faucetEndTime = await beeFaucet.faucetEndTime()
+
+            assert.closeTo(faucetEndTime.toNumber(), expectedEndTime, 2, "Faucet end time is not equal to expected end time")
+        })
+
+        it("creates a new faucet with correct end time when old faucet has expired", async () => {
+            await beeFaucet.createFaucet()
+            TestUtils.increaseTestRpcTime(web3, 31540005)
+            await beeFaucet.createFaucet()
+            const currentBlockTime = web3.eth.getBlock("latest").timestamp
+            const expectedEndTime = currentBlockTime + 31540000
+            const faucetEndTime = await beeFaucet.faucetEndTime()
+
+            assert.equal(faucetEndTime, expectedEndTime, "Faucet end time is not equal to expected end time")
+        })
+
+        it("does not create a new faucet before old faucet has expired", async () => {
+            const maxGasUsed = 2000000
+            await beeFaucet.createFaucet()
+            TestUtils.increaseTestRpcTime(web3, 31539999)
+
+            await TestUtils.assertThrows(() => beeFaucet.createFaucet({gas: maxGasUsed}), maxGasUsed)
+        })
+
+        it("creates a new Bee token", async () => {
+            const currentBeeTokenAddress = await beeFaucet.getBeeTokenAddress();
+            await beeFaucet.createFaucet()
+            const newBeeTokenAddress = await beeFaucet.getBeeTokenAddress()
+
+            assert.notEqual(newBeeTokenAddress, currentBeeTokenAddress, "Bee token has not been recreated")
+        })
     })
 
     describe("claimBee(address receiverAddress, string jwtMessage, uint8 signatureV, bytes32 signatureR, bytes32 signatureS)", () => {
