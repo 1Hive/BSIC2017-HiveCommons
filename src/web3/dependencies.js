@@ -1,6 +1,6 @@
 import Web3Bridge from "./web3Bridge.js"
-import BeeTokenBridge from "./beeTokenBridge";
-import HoneyTokenBridge from "./honeyTokenBridge";
+import BeeTokenBridge from "./contracts/beeTokenBridge";
+import HoneyTokenBridge from "./contracts/honeyTokenBridge";
 
 export let web3Bridge, beeTokenBridge, honeyTokenBridge
 
