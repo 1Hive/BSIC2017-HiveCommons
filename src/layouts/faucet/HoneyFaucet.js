@@ -57,7 +57,7 @@ const HoneyFaucetInner = ({honeyToken, updateHoneyBalance, updateHoneyToBeeRate,
                 <div className="pure-u-1-1">
                     <h1> HNY Faucet </h1>
                     <p>Convert BEE tokens to HNY tokens
-                        at {honeyToken.honeyToBeeRate ? honeyToken.honeyToBeeRate : "[loading]"} Honey for 1 Bee</p>
+                        at {honeyToken.honeyToBeeRate ? honeyToken.honeyToBeeRate : "[loading or faucet hasn't been created yet]"} Honey for 1 Bee</p>
                     <OnlyGuestLinks/>
                     <HoneyBalance/>
                     <BeeAvailable/>
