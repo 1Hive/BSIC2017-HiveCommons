@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
-import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
+import React, {Component} from 'react'
+import {Link} from 'react-router'
+import {HiddenOnlyAuth, VisibleOnlyAuth} from './util/wrappers.js'
 
 // UI Components
 import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
@@ -14,7 +14,10 @@ import './App.css'
 import {loadWeb3} from "./web3/getWeb3";
 import {createDependencies} from "./web3/dependencies";
 import store from "./store";
-import {updateBeeBalance, updateHoneyBalance} from "./layouts/faucet/balanceActions";
+import {
+  updateBeeAvailableForClaiming, updateBeeBalance, updateHoneyBalance,
+  updateHoneyToBeeRate
+} from "./layouts/faucet/faucetActions";
 
 // Not sure where the best place to instantiate dependencies is.
 // This is a slow process though and should be moved somewhere where it doesn't effect start up time.
@@ -25,11 +28,13 @@ import {updateBeeBalance, updateHoneyBalance} from "./layouts/faucet/balanceActi
 // However, to use the uPort web3 object the contracts would have to be deployed to Rinkeby and the user
 // would have to log in through uPort before executing any transactions.
 loadWeb3
-    .then(web3 => {
-      createDependencies(web3)
-      store.dispatch(updateBeeBalance())
-      store.dispatch(updateHoneyBalance())
-    })
+  .then(web3 => {
+    createDependencies(web3)
+    store.dispatch(updateBeeBalance())
+    store.dispatch(updateHoneyBalance())
+    store.dispatch(updateHoneyToBeeRate())
+    store.dispatch(updateBeeAvailableForClaiming())
+  })
 
 class App extends Component {
   render() {
@@ -39,7 +44,7 @@ class App extends Component {
           <Link to="/profile" className="pure-menu-link">Profile</Link>
         </li>
         <li className="pure-menu-item">
-          <LogoutButtonContainer />
+          <LogoutButtonContainer/>
         </li>
 
       </span>
@@ -64,8 +69,8 @@ class App extends Component {
             <li className="pure-menu-item">
               <Link className="pure-menu-link" to="/faucet/hny">HNY Faucet</Link>
             </li>
-            <OnlyGuestLinks />
-            <OnlyAuthLinks />
+            <OnlyGuestLinks/>
+            <OnlyAuthLinks/>
           </ul>
         </nav>
 

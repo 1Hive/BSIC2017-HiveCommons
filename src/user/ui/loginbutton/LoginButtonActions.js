@@ -1,5 +1,7 @@
 import { uport } from './../../../util/connectors.js'
 import { browserHistory } from 'react-router'
+import * as Utils from "../../../../utils/Utils";
+import {updateBeeClaimable} from "../../../layouts/faucet/faucetActions";
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 function userLoggedIn(user) {
@@ -23,6 +25,9 @@ export function loginUser() {
       console.log(credentials)
 
       dispatch(userLoggedIn(credentials))
+
+      const jwt = Utils.getJwtForAttestation(credentials.verified, "Uniqueness")
+      dispatch(updateBeeClaimable(jwt))
 
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.

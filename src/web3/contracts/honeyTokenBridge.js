@@ -1,6 +1,7 @@
 import Contract from "truffle-contract"
 import HoneyToken from "../../../build/contracts/HoneyToken.json"
 import HoneyFaucet from "../../../build/contracts/HoneyFaucet.json"
+import MiniMeToken from "../../../build/contracts/MiniMeToken.json"
 import * as Rx from "rxjs";
 
 export default class HoneyTokenBridge {
@@ -26,10 +27,28 @@ export default class HoneyTokenBridge {
             .flatMap(honeyToken => honeyToken.hasBeeInClone())
     }
 
+    beeAvailableInClone() {
+        return this.honeyFaucet$
+            .flatMap(honeyFaucet => honeyFaucet.getBeeTokenCloneAddress())
+            .flatMap(beeTokenCloneAddress => {
+                const beeToken = Contract(MiniMeToken)
+                beeToken.setProvider(this.web3.currentProvider)
+                const beeTokenInst = beeToken.at(beeTokenCloneAddress)
+                return beeTokenInst.balanceOf(this.web3.eth.coinbase)
+            })
+            .map(balance => balance.toNumber())
+    }
+
+    getHoneyForBeeRate() {
+        return this.honeyFaucet$
+            .flatMap(honeyFaucet => honeyFaucet.honeyForBeeRate())
+            .map(honeyToBeeRate => honeyToBeeRate / 10 ** 18)
+    }
+
     getBalance() {
         return this.honeyToken$
             .flatMap(honeyToken => honeyToken.balanceOf(this.web3.eth.coinbase))
-            .map(balance => balance / 10**18)
+            .map(balance => balance / 10 ** 18)
     }
 
     createFaucet() {

@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux'
 import {routerReducer} from 'react-router-redux'
 import userReducer from './user/userReducer'
-import {beeBalanceReducer, honeyBalanceReducer} from './layouts/faucet/balanceReducer'
+import {beeBalanceReducer, honeyBalanceReducer} from './layouts/faucet/faucetReducers'
 
 const reducer = combineReducers({
     routing: routerReducer,
