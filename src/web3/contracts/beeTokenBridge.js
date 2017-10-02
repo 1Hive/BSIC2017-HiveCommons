@@ -24,6 +24,12 @@ export default class BeeTokenBridge {
         this.web3 = web3
     }
 
+    canClaimBee(jwt) {
+        const formattedJwt = formatJwt(jwt)
+        return this.beeFaucet$
+            .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
+    }
+
     claimBeeToken(jwt) {
         const formattedJwt = formatJwt(jwt)
         return this.beeFaucet$

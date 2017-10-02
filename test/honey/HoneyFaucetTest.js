@@ -94,6 +94,21 @@ contract("HoneyFaucet", accounts => {
 
     })
 
+    describe("hasBeeInClone()", () => {
+
+        it("returns true if sender account contains 1 or more Bee tokens", async () => {
+            await honeyFaucet.createFaucet()
+            const hasBeeInClone = await honeyFaucet.hasBeeInClone({from: beeOwner1})
+            assert.isTrue(hasBeeInClone, "Senders address has 0 Bee tokens")
+        })
+
+        it("returns false if sender account contains 0 Bee tokens", async () => {
+            await honeyFaucet.createFaucet()
+            const hasBeeInClone = await honeyFaucet.hasBeeInClone({from: beeOwner2})
+            assert.isFalse(hasBeeInClone, "Senders address has 1 or more Bee tokens")
+        })
+    })
+
     describe("claimHoney()", () => {
 
         const maxGasUsed = 2000000

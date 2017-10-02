@@ -24,8 +24,6 @@ contract HoneyFaucet is FaucetPeriod {
         setFaucetPeriodLength(2628000); // 1 month in seconds
     }
 
-    modifier hasBee() { require(beeTokenClone.balanceOf(msg.sender) > 0); _; }
-
     function getHoneyTokenAddress() public constant returns(address) {
         return address(honeyToken);
     }
@@ -61,13 +59,18 @@ contract HoneyFaucet is FaucetPeriod {
         honeyForBeeRate = currentFaucetTotalDistribution / currentFaucetTotalBee;
     }
 
+    function hasBeeInClone() public constant returns (bool) {
+        return beeTokenClone.balanceOf(msg.sender) > 0;
+    }
+
     /**
      * @notice Allows the owner of one or more Bee tokens to destroy them in return for Honey tokens.
      *         The owner must have had Bee in the calling account at the time createFaucet() is successfully executed.
      *         Honey tokens are granted to the sending accounts balance.
      *         Ownership/minting privilege of the HoneyToken must have been transferred to the HoneyFaucet contract after initial distribution.
      */
-    function claimHoney() public hasBee {
+    function claimHoney() public {
+        require(hasBeeInClone());
         uint sendersAccountBeeBalance = beeTokenClone.balanceOf(msg.sender);
         uint honeyAwarded = sendersAccountBeeBalance * honeyForBeeRate;
         beeTokenClone.destroyTokens(msg.sender, sendersAccountBeeBalance);

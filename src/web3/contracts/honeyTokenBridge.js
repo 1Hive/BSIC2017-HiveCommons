@@ -21,6 +21,11 @@ export default class HoneyTokenBridge {
         this.web3 = web3
     }
 
+    canClaimHoney() {
+        return this.honeyFaucet$
+            .flatMap(honeyToken => honeyToken.hasBeeInClone())
+    }
+
     getBalance() {
         return this.honeyToken$
             .flatMap(honeyToken => honeyToken.balanceOf(this.web3.eth.coinbase))

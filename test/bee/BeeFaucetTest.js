@@ -74,6 +74,33 @@ contract("BeeFaucet", accounts => {
         })
     })
 
+    describe("canClaimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s)", () => {
+
+        const receiverAccount = accounts[0]
+
+        it("returns true when signature is valid and jwtMessageHash hasn't already been claimed against", async () => {
+            const formattedJwt = ValidationUtils.formatJwt(jwtWithValidSignature)
+            const canClaimBee = await beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex)
+
+            assert.isTrue(canClaimBee, "signature or jwtMessageHash is invalid")
+        })
+
+        it("returns false when signature is invalid and jwtMessageHash hasn't already been claimed against", async () => {
+            const formattedJwt = ValidationUtils.formatJwt(jwtWithInvalidSignature)
+            const canClaimBee = await beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex)
+
+            assert.isFalse(canClaimBee, "signature and jwtMessageHash is valid")
+        })
+
+        it("returns false when signature is valid but jwtMessageHash has already been claimed against", async () => {
+            const formattedJwt = ValidationUtils.formatJwt(jwtWithValidSignature)
+            await beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex, {from: receiverAccount})
+            const canClaimBee = await beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex)
+
+            assert.isFalse(canClaimBee, "signature and jwtMessageHash is valid")
+        })
+    })
+
     describe("claimBee(address receiverAddress, string jwtMessage, uint8 signatureV, bytes32 signatureR, bytes32 signatureS)", () => {
 
         const receiverAccount = accounts[1]

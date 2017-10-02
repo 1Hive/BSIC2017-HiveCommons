@@ -26,8 +26,6 @@ contract BeeFaucet is Ownable, FaucetPeriod {
         setFaucetPeriodLength(31540000); // ~ 1 year in seconds
     }
 
-    modifier notAlreadyClaimed(bytes32 jwtMessageHash) { require(!claimedAttestations[jwtMessageHash]); _; }
-
     function getBeeTokenAddress() constant public returns (address) {
         return address(beeToken);
     }
@@ -50,6 +48,19 @@ contract BeeFaucet is Ownable, FaucetPeriod {
         kycProviderPublicAddress = _kycProviderPublicAddress;
     }
 
+    function canClaimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public constant returns (bool) {
+        return notAlreadyClaimed(jwtMessageHash) && validAttestation(jwtMessageHash, v, r, s);
+    }
+
+    function notAlreadyClaimed(bytes32 jwtMessageHash) private returns (bool) {
+        return !claimedAttestations[jwtMessageHash];
+    }
+
+    function validAttestation(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
+        address signerPublicAddress = ecrecover(jwtMessageHash, v, r, s);
+        return kycProviderPublicAddress == signerPublicAddress;
+    }
+
     /**
      * @notice Have a Bee token sent to the senders account if the attestation is valid.
      *         Can only be called once for each valid jwtMessageHash. This could be updated to include
@@ -60,11 +71,9 @@ contract BeeFaucet is Ownable, FaucetPeriod {
      * @param r elliptic curve signature r value
      * @param s elliptic curve signature s value
      */
-    function claimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public notAlreadyClaimed(jwtMessageHash) {
-
-        // Validate the jwtMessage as being signed by the KYC providers account.
-        address attestationSigner = ecrecover(jwtMessageHash, v, r, s);
-        require(kycProviderPublicAddress == attestationSigner);
+    function claimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public
+    {
+        require(canClaimBee(jwtMessageHash, v, r, s));
 
         // Update claimed attestation to prevent user claiming twice.
         claimedAttestations[jwtMessageHash] = true;
@@ -72,5 +81,4 @@ contract BeeFaucet is Ownable, FaucetPeriod {
         beeToken.generateTokens(msg.sender, 1);
         LogBeeClaimed(msg.sender);
     }
-
 }
