@@ -1,5 +1,5 @@
 import {
-  UPDATE_BEE_BALANCE, UPDATE_HONEY_BALANCE, UPDATE_BEE_CLAIMABLE, UPDATE_HONEY_CLAIMABLE,
+  UPDATE_BEE_BALANCE, UPDATE_HONEY_BALANCE, UPDATE_BEE_CLAIMABLE, UPDATE_BEE_AVAILABLE_FOR_CLAIMING,
   UPDATE_HONEY_TO_BEE_RATE
 } from "./faucetActions"
 
@@ -34,7 +34,7 @@ export const honeyBalanceReducer = (state = honeyInitialState, action) => {
             return Object.assign({}, state, {
                 honeyBalance: action.honeyBalance
             })
-        case UPDATE_HONEY_CLAIMABLE:
+        case UPDATE_BEE_AVAILABLE_FOR_CLAIMING:
             return Object.assign({}, state, {
                 beeAvailableForClaiming: action.beeAvailableForClaiming
             })

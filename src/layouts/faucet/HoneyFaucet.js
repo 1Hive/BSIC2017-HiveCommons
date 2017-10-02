@@ -21,7 +21,7 @@ const HoneyFaucetInner = ({honeyToken, updateHoneyBalance, updateHoneyToBeeRate,
 
     const HoneyBalance = () =>
         <div>
-            Honey Balance: {honeyToken.honeyBalance ? honeyToken.honeyBalance : "loading"}
+            Honey Balance: {honeyToken.honeyBalance === null ? "loading" : honeyToken.honeyBalance}
         </div>
 
     const BeeAvailable = () =>

@@ -3,7 +3,7 @@ import * as dependencies from "../../web3/dependencies";
 export const UPDATE_BEE_BALANCE = 'UPDATE_BEE_BALANCE'
 export const UPDATE_HONEY_BALANCE = 'UPDATE_HONEY_BALANCE'
 export const UPDATE_BEE_CLAIMABLE = 'UPDATE_BEE_CLAIMABLE'
-export const UPDATE_HONEY_CLAIMABLE = 'UPDATE_HONEY_CLAIMABLE'
+export const UPDATE_BEE_AVAILABLE_FOR_CLAIMING = 'UPDATE_BEE_AVAILABLE_FOR_CLAIMING'
 export const UPDATE_HONEY_TO_BEE_RATE = 'UPDATE_HONEY_TO_BEE_RATE'
 
 export const updatedBeeBalance = (beeBalance) => {
@@ -27,9 +27,9 @@ export const updatedBeeClaimable = (isBeeClaimable) => {
     }
 }
 
-export const updatedHoneyClaimable = (beeAvailableForClaiming) => {
+export const updatedBeeAvailableForClaiming = (beeAvailableForClaiming) => {
     return {
-        type: UPDATE_HONEY_CLAIMABLE,
+        type: UPDATE_BEE_AVAILABLE_FOR_CLAIMING,
         beeAvailableForClaiming
     }
 }
@@ -64,7 +64,7 @@ export const updateBeeClaimable = (jwt) => {
 export const updateBeeAvailableForClaiming = () => {
     return dispatch => {
         dependencies.honeyTokenBridge.beeAvailableInClone()
-            .subscribe((beeAvailable => dispatch(updatedHoneyClaimable(beeAvailable))))
+            .subscribe((beeAvailable => dispatch(updatedBeeAvailableForClaiming(beeAvailable))))
     }
 }
 
