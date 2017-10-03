@@ -24,10 +24,13 @@ export function loginUser() {
       // Check out the console to see what data we get from uPort. We need to save it somewhere for use when we want to claim Bee.
       console.log(credentials)
 
-      dispatch(userLoggedIn(credentials))
+      // Setup the credentials object with 'isUnique' for display convenience, and 'jwt' to use later in the claim function
+      credentials.jwt = credentials.verified
+        .filter(_attestation => "Uniqueness" in _attestation.claim)[0]
+        .jwt
+      credentials.isUnique = !!credentials.jwt
 
-      const jwt = Utils.getJwtForAttestation(credentials.verified, "Uniqueness")
-      dispatch(updateBeeClaimable(jwt))
+      dispatch(userLoggedIn(credentials))
 
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.

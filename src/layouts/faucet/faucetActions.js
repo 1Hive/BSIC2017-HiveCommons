@@ -1,10 +1,8 @@
 import * as dependencies from "../../web3/dependencies";
 
+// BEE Actions
 export const UPDATE_BEE_BALANCE = 'UPDATE_BEE_BALANCE'
-export const UPDATE_HONEY_BALANCE = 'UPDATE_HONEY_BALANCE'
 export const UPDATE_BEE_CLAIMABLE = 'UPDATE_BEE_CLAIMABLE'
-export const UPDATE_HONEY_CLAIMABLE = 'UPDATE_HONEY_CLAIMABLE'
-export const UPDATE_HONEY_TO_BEE_RATE = 'UPDATE_HONEY_TO_BEE_RATE'
 
 export const updatedBeeBalance = (beeBalance) => {
     return {
@@ -12,14 +10,6 @@ export const updatedBeeBalance = (beeBalance) => {
         beeBalance
     }
 }
-
-export const updatedHoneyBalance = (honeyBalance) => {
-    return {
-        type: UPDATE_HONEY_BALANCE,
-        honeyBalance
-    }
-}
-
 export const updatedBeeClaimable = (isBeeClaimable) => {
     return {
         type: UPDATE_BEE_CLAIMABLE,
@@ -27,19 +17,34 @@ export const updatedBeeClaimable = (isBeeClaimable) => {
     }
 }
 
+
+// HNY Actions
+export const UPDATE_HONEY_BALANCE = 'UPDATE_HONEY_BALANCE'
+export const UPDATE_HONEY_CLAIMABLE = 'UPDATE_HONEY_CLAIMABLE'
+export const UPDATE_HONEY_TO_BEE_RATE = 'UPDATE_HONEY_TO_BEE_RATE'
+
+export const updatedHoneyBalance = (honeyBalance) => {
+    return {
+        type: UPDATE_HONEY_BALANCE,
+        honeyBalance
+    }
+}
 export const updatedHoneyClaimable = (beeAvailableForClaiming) => {
     return {
         type: UPDATE_HONEY_CLAIMABLE,
         beeAvailableForClaiming
     }
 }
-
 export const updatedHoneyToBeeRate = (honeyToBeeRate) => {
     return {
         type: UPDATE_HONEY_TO_BEE_RATE,
         honeyToBeeRate
     }
 }
+
+
+// --
+
 
 export const updateBeeBalance = () => {
     return dispatch => {
@@ -48,12 +53,6 @@ export const updateBeeBalance = () => {
     }
 }
 
-export const updateHoneyBalance = () => {
-    return dispatch => {
-        dependencies.honeyTokenBridge.getBalance()
-            .subscribe(honeyTokenBalance => dispatch(updatedHoneyBalance(honeyTokenBalance)))
-    }
-}
 export const updateBeeClaimable = (jwt) => {
     return dispatch => {
         dependencies.beeTokenBridge.canClaimBee(jwt)
@@ -68,10 +67,16 @@ export const updateBeeAvailableForClaiming = () => {
     }
 }
 
+export const updateHoneyBalance = () => {
+    return dispatch => {
+        dependencies.honeyTokenBridge.getBalance()
+            .subscribe(honeyTokenBalance => dispatch(updatedHoneyBalance(honeyTokenBalance)))
+    }
+}
+
 export const updateHoneyToBeeRate = () => {
     return dispatch => {
         dependencies.honeyTokenBridge.getHoneyForBeeRate()
             .subscribe(honeyToBeeRate => dispatch(updatedHoneyToBeeRate(honeyToBeeRate)))
     }
 }
-

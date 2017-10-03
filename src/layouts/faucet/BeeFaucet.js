@@ -9,6 +9,23 @@ import {updateBeeBalance, updateBeeClaimable} from "./faucetActions"
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
 import * as Utils from "../../../utils/Utils";
 
+// Functions
+
+// We probably want a loading spinner to appear somewhere while we wait for the tx to be mined. It can be stopped once the promise returns.
+// Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
+
+const claimBee = function() {
+  const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
+
+  beeTokenBridge.claimBeeToken(jwt)
+    .subscribe(() => {
+        console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
+        updateBeeBalance()
+        updateBeeIsClaimable(jwt)
+      }
+    )
+}
+
 const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
 
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
@@ -16,28 +33,20 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
 
       {beeToken.beeIsClaimable ?
 
-        <button className="pure-button button-xlarge" onClick={() => {
-          // We probably want a loading spinner to appear somewhere while we wait for the tx to be mined. It can be stopped once the promise returns.
-          // Also we should have a field showing the users current balance of BEE and update it once we have successfully claimed from the BEE faucet.
-          // We can get the balance with beeTokenBridge.getBeeTokenBalance([users address]).then(balance => do something with balance)
-          // We can get the users public address with web3Bridge.getUsersAccounts().then(accounts => console.log(accounts[0])).
-          // The first account in the returned array is the one that is used for everything unless specified otherwise.
-
-          // Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
-          const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
-
-          beeTokenBridge.claimBeeToken(jwt)
-            .subscribe(() => {
-                console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-                updateBeeBalance()
-                updateBeeIsClaimable(jwt)
-              }
-            )
-
-        }}>Claim BEE Token
+        <button className="pure-button button-xlarge" onClick={claimBee}>
+          Claim BEE Token
         </button>
 
-        : "Bee has been claimed"}
+      :
+
+        <div>
+          <p>Bee has been claimed</p>
+          <div>
+            Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"}
+          </div>
+        </div>
+
+      }
 
     </div>
   )
@@ -68,11 +77,6 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
       <br/>log back into their uPort account before they can claim a BEE token.
     </div>
 
-  const BeeBalance = () =>
-    <div>
-      Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"}
-    </div>
-
   return (
     <main className="container">
       <div className="pure-g">
@@ -80,8 +84,6 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
           <h1> Bee Faucet</h1>
           <OnlyGuestLinks/>
           <OnlyAuthLinks/>
-          <BeeBalance/>
-          <AttestationLink/>
         </div>
       </div>
     </main>
