@@ -42,9 +42,10 @@ loadWeb3
 
 class App extends Component {
   render() {
+
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
-        <li className="pure-menu-item">
+        <li className={'pure-menu-item' + isActive}>
           <Link to="/profile" className="pure-menu-link">Profile</Link>
         </li>
         <li className="pure-menu-item">

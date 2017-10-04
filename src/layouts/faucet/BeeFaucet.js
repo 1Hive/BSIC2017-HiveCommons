@@ -119,7 +119,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
           <h2>Before you begin</h2>
           <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
           <div className=''>
-            <a className='pure-button attest-app'
+            <a className='pure-button pure-button-primary'
               href="http://attest.servesa.io"
               target='_blank'
               rel='noopener norefferer'>
