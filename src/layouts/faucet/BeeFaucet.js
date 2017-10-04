@@ -28,8 +28,6 @@ const claimBee = function() {
 
 const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
 
-
-
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <div>
 
@@ -37,9 +35,18 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
 
         <div>
 
-          <button className="pure-button button-xlarge" onClick={claimBee}> Claim BEE Token </button>
-          <p>Bee has been claimed</p>
-          <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
+          {beeToken.beeIsClaimable ?
+
+            <button className="pure-button button-xlarge" onClick={claimBee}> Claim BEE Token </button>
+
+            :
+
+            <div>
+              <p>Bee has already been claimed, or is not available.</p>
+              <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
+            </div>
+
+          }
 
         </div>
 
@@ -64,6 +71,8 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
       <p>In order to cliam a BEE token you need to have an attestation that you are unique.</p>
       <p>If you have recieved this in the last few minutes or so it may not yet be active. </p>
       <a href="http://attest.servesa.io">Get attestation</a>
+
+      <button onClick={(()=>generateUniquenessAttestation(userData.address))}>attest</button>
     </div>
 
   return (
