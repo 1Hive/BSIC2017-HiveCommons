@@ -1,6 +1,6 @@
 import { uport } from './../../../util/connectors.js'
 import { browserHistory } from 'react-router'
-import * as Utils from "../../../../utils/Utils";
+import * as Utils from "../../../utils/Utils";
 import {updateBeeClaimable} from "../../../layouts/faucet/faucetActions";
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'

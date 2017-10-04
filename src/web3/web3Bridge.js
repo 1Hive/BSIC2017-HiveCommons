@@ -1,4 +1,4 @@
-import {convertToPromise} from "../../utils/Utils.js"
+import {convertToPromise} from "../utils/Utils.js"
 
 export default class Web3Bridge {
 

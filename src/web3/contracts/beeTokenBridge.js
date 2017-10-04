@@ -1,7 +1,7 @@
 import Contract from "truffle-contract"
 import BeeFaucet from "../../../build/contracts/BeeFaucet.json"
 import MiniMeToken from "../../../build/contracts/MiniMeToken.json"
-import {formatJwt} from "../../../utils/ValidationUtils.js"
+import {formatJwt} from "../../utils/ValidationUtils.js"
 import * as Rx from "rxjs";
 
 export default class BeeTokenBridge {

@@ -7,7 +7,7 @@ import {updateBeeBalance, updateBeeClaimable} from "./faucetActions"
 
 // UI Components
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
-import * as Utils from "../../../utils/Utils";
+import * as Utils from "../../utils/Utils";
 
 
 // Images
