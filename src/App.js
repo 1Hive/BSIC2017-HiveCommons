@@ -10,12 +10,15 @@ import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
+import './css/grids-responsive-min.css'
 import './App.css'
 import {loadWeb3} from "./web3/getWeb3";
 import {createDependencies} from "./web3/dependencies";
 import store from "./store";
 import {
-  updateBeeAvailableForClaiming, updateBeeBalance, updateHoneyBalance,
+  updateBeeAvailableForClaiming,
+  updateBeeBalance,
+  updateHoneyBalance,
   updateHoneyToBeeRate
 } from "./layouts/faucet/faucetActions";
 
@@ -27,6 +30,7 @@ import {
 // need to be confirmed on the users device and faucet claims would be transferred to the users uPort address.
 // However, to use the uPort web3 object the contracts would have to be deployed to Rinkeby and the user
 // would have to log in through uPort before executing any transactions.
+
 loadWeb3
   .then(web3 => {
     createDependencies(web3)
@@ -60,9 +64,6 @@ class App extends Component {
         <nav className="navbar pure-menu pure-menu-horizontal">
           <Link to="/" className="pure-menu-heading pure-menu-link">HiveCommons</Link>
           <ul className="pure-menu-list navbar-right">
-            <li className="pure-menu-item">
-              <Link className="pure-menu-link" to="/hives">Hives</Link>
-            </li>
             <li className="pure-menu-item">
               <Link className="pure-menu-link" to="/faucet/bee">BEE Faucet</Link>
             </li>
