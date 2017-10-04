@@ -17,8 +17,6 @@ import xmark from '../../img/X_mark.svg'
 
 const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
 
-  // We probably want a loading spinner to appear somewhere while we wait for the tx to be mined. It can be stopped once the promise returns.
-  // Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
   const claimBee = function () {
     const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
 
@@ -42,42 +40,29 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
   const BeeFaucetAuth = VisibleOnlyAuth(() =>
     <div>
 
-      {!userData.isUnique ?
+      {userData.isUnique && beeToken.beeIsClaimable ?
 
         <button
-          disabled
           className="pure-button pure-button-primary"
           onClick={claimBee}> Claim BEE Token
         </button>
 
       :
 
-      <div>
+        <div>
+          {beeToken.beeBalance > 0 ?
 
-          {beeToken.beeIsClaimable ?
-
-            <button className="pure-button pure-button-primary" onClick={claimBee}> Claim BEE Token </button>
+            <div>
+              <p>Congrats! You have claimed your BEE token!</p>
+              <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
+            </div>
 
             :
 
-            <div>
-
-              {beeToken.beeBalance > 0?
-
-                <div>
-                  <p>Congrats! You have claimed your BEE token!</p>
-                  <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
-                </div>
-
-                :
-
-                <p>BEE token is unavailable, not sure why :/</p>
-              }
-
-            </div>
+            <p>BEE token is unavailable, not sure why :/</p>
           }
-
         </div>
+
       }
 
     </div>
@@ -91,16 +76,8 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
   const UPortAuth = VisibleOnlyAuth(() =>
     <div>
 
-      <ul>
-        <li>Login status:
-          <img className='button-icon button-icon-left' src={userData ? checkmark : xmark }></img>
-        </li>
-        <li>Unique:
-          <img className='button-icon button-icon-left' src={userData.isUnique ? checkmark : xmark }></img>
-        </li>
-      </ul>
-
       {!userData.isUnique ?
+
         <div>
           <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
             <a className='pure-button attest-app'
@@ -114,33 +91,6 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
         :
         null
       }
-
-      <div>
-
-          {beeToken.beeIsClaimable ?
-
-            <button className="pure-button pure-button-primary" onClick={claimBee}> Claim BEE Token </button>
-
-            :
-
-            <div>
-
-              {beeToken.beeBalance > 0?
-
-                <div>
-                  <p>Congrats! You have claimed your BEE token!</p>
-                  <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
-                </div>
-
-                :
-
-                <p>BEE token is unavailable, not sure why :/</p>
-              }
-
-            </div>
-          }
-
-        </div>
 
     </div>
   )
@@ -183,6 +133,9 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
           <h2>Claim your BEE token</h2>
           <UPortGuest/>
           <UPortAuth/>
+
+          <BeeFaucetAuth/>
+
 
         </div>
       </div>
