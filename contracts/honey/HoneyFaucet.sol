@@ -13,7 +13,7 @@ contract HoneyFaucet is FaucetPeriod {
     uint public honeyForBeeRate;
 
     /**
-     * @notice Create the Honey Faucet contract and set the faucet peiod length.
+     * @notice Create the Honey Faucet contract and set the faucet period length.
      *         This does not initialise the faucet, to do that call createFaucet().
      * @param honeyTokenAddress Address of the HoneyToken contract
      * @param beeFaucetAddress Address of the BeeFaucet contract
@@ -64,7 +64,7 @@ contract HoneyFaucet is FaucetPeriod {
     }
 
     /**
-     * @notice Allows the owner of one or more Bee tokens to destroy them in return for Honey tokens.
+     * @notice Allows the owner of one or more Bee tokens in the Bee clone to destroy them in return for Honey tokens.
      *         The owner must have had Bee in the calling account at the time createFaucet() is successfully executed.
      *         Honey tokens are granted to the sending accounts balance.
      *         Ownership/minting privilege of the HoneyToken must have been transferred to the HoneyFaucet contract after initial distribution.

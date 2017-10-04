@@ -26,14 +26,15 @@ export default class BeeTokenBridge {
 
     canClaimBee(jwt) {
         const formattedJwt = formatJwt(jwt)
+        console.log(formattedJwt)
         return this.beeFaucet$
-            .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
+            .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 28, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
     }
 
     claimBeeToken(jwt) {
         const formattedJwt = formatJwt(jwt)
         return this.beeFaucet$
-            .flatMap(beeFaucet => beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
+            .flatMap(beeFaucet => beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 28, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
                 {from: this.web3.eth.coinbase, gas: 2000000}))
     }
 

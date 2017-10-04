@@ -39,7 +39,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
             :
 
             <div>
-              <p>Bee has already been claimed, or is not available.</p>
+              <p>Bee has been claimed or is unavailable.</p>
               <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
             </div>
 
@@ -66,7 +66,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
   const AttestationLink = () =>
     <div>
       <p>In order to cliam a BEE token you need to have an attestation that you are unique.</p>
-      <p>If you have recieved this in the last few minutes or so it may not yet be active. </p>
+      <p>Once you have received the attestation you must refresh this page and log back in again to be able to claim Bee.</p>
       <a href="http://attest.servesa.io">Get attestation</a>
 
       <button onClick={(() => generateUniquenessAttestation(userData.address))}>attest</button>

@@ -7,27 +7,32 @@ const HoneyFaucetInner = ({honeyToken, updateHoneyBalance, updateHoneyToBeeRate,
 
     const OnlyGuestLinks = () =>
         <div>
-            <button className="pure-button button-xlarge" onClick={() =>
+            {honeyToken.beeAvailableForClaiming === 0 ?
 
-                honeyTokenBridge.claimHoney().subscribe(() => {
-                    console.log("Honey sent to sending users account")
-                    updateHoneyBalance()
-                    updateBeeClaimableForHoney()
-                })
-            }>
-                Claim Honey
-            </button>
+                <p>No Bee available for claiming Honey in this faucet period (or faucet hasn't been created yet)</p> :
+
+                <button className="pure-button button-xlarge" onClick={() =>
+
+                    honeyTokenBridge.claimHoney().subscribe(() => {
+                        console.log("Honey sent to sending users account")
+                        updateHoneyBalance()
+                        updateBeeClaimableForHoney()
+                    })
+                }>
+                    Claim Honey
+                </button>
+            }
         </div>
 
     const HoneyBalance = () =>
         <div>
-            Honey Balance: {honeyToken.honeyBalance ? honeyToken.honeyBalance : "loading"}
+            Honey Balance: {honeyToken.honeyBalance === null ? "loading" : honeyToken.honeyBalance}
         </div>
 
     const BeeAvailable = () =>
         <div>
             Bee Available for Claiming in this
-            faucet: {honeyToken.beeAvailableForClaiming === null ? "loading" : honeyToken.beeAvailableForClaiming}
+            faucet period: {honeyToken.beeAvailableForClaiming === null ? "loading" : honeyToken.beeAvailableForClaiming}
         </div>
 
     const CreateFaucet = () =>
@@ -57,7 +62,7 @@ const HoneyFaucetInner = ({honeyToken, updateHoneyBalance, updateHoneyToBeeRate,
                 <div className="pure-u-1-1">
                     <h1> HNY Faucet </h1>
                     <p>Convert BEE tokens to HNY tokens
-                        at {honeyToken.honeyToBeeRate ? honeyToken.honeyToBeeRate : "[loading or faucet hasn't been created yet]"} Honey for 1 Bee</p>
+                        at {honeyToken.honeyToBeeRate ? honeyToken.honeyToBeeRate : "[loading (or faucet hasn't been created yet)]"} Honey for 1 Bee</p>
                     <OnlyGuestLinks/>
                     <HoneyBalance/>
                     <BeeAvailable/>
