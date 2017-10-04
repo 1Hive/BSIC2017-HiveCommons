@@ -26,7 +26,9 @@ export function loginUser() {
       if(attestation){
           credentials.jwt = attestation.jwt
           credentials.isUnique = true
+          dispatch(updateBeeClaimable(attestation.jwt))
       }
+
 
       // Check out the console to see what data we get from uPort.
       console.log(credentials)

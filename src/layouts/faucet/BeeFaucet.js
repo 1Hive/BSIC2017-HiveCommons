@@ -9,24 +9,21 @@ import {updateBeeBalance, updateBeeClaimable} from "./faucetActions"
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
 import * as Utils from "../../../utils/Utils";
 
-// Functions
-
-// We probably want a loading spinner to appear somewhere while we wait for the tx to be mined. It can be stopped once the promise returns.
-// Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
-
-const claimBee = function() {
-  const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
-
-  beeTokenBridge.claimBeeToken(jwt)
-    .subscribe(() => {
-        console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-        updateBeeBalance()
-        updateBeeIsClaimable(jwt)
-      }
-    )
-}
-
 const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
+
+  // We probably want a loading spinner to appear somewhere while we wait for the tx to be mined. It can be stopped once the promise returns.
+  // Put the 'verified.0.claim.jwt' from the 'requestCredentials()' response in place of the long string. (You will have to log in again if the attestation was granted since originally logging in)
+  const claimBee = function () {
+    const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
+
+    beeTokenBridge.claimBeeToken(jwt)
+      .subscribe(() => {
+          console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
+          updateBeeBalance()
+          updateBeeIsClaimable(jwt)
+        }
+      )
+  }
 
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <div>
@@ -50,7 +47,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
 
         </div>
 
-      :
+        :
 
         <AttestationLink/>
 
@@ -72,7 +69,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
       <p>If you have recieved this in the last few minutes or so it may not yet be active. </p>
       <a href="http://attest.servesa.io">Get attestation</a>
 
-      <button onClick={(()=>generateUniquenessAttestation(userData.address))}>attest</button>
+      <button onClick={(() => generateUniquenessAttestation(userData.address))}>attest</button>
     </div>
 
   return (
