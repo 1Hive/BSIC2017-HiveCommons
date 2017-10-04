@@ -6,7 +6,7 @@ import * as Rx from "rxjs";
 
 export default class HoneyTokenBridge {
 
-    constructor(web3) {
+    constructor(web3, web3Bridge) {
         const honeyToken = Contract(HoneyToken)
         honeyToken.setProvider(web3.currentProvider)
         this.honeyToken$ = Rx.Observable
@@ -19,22 +19,25 @@ export default class HoneyTokenBridge {
             .fromPromise(honeyFaucet.deployed())
             .shareReplay(1)
 
-        this.web3 = web3
+        const uninstantiatedBeeToken = Contract(MiniMeToken)
+        uninstantiatedBeeToken.setProvider(web3.currentProvider)
+        this.uninstantiatedBeeToken = uninstantiatedBeeToken
+
+        this.web3Bridge = web3Bridge
     }
 
     canClaimHoney() {
         return this.honeyFaucet$
-            .flatMap(honeyToken => honeyToken.hasBeeInClone())
+            .flatMap(honeyFaucet => honeyFaucet.hasBeeInClone())
     }
 
     beeAvailableInClone() {
         return this.honeyFaucet$
             .flatMap(honeyFaucet => honeyFaucet.getBeeTokenCloneAddress())
-            .flatMap(beeTokenCloneAddress => {
-                const beeToken = Contract(MiniMeToken)
-                beeToken.setProvider(this.web3.currentProvider)
-                const beeTokenInst = beeToken.at(beeTokenCloneAddress)
-                return beeTokenInst.balanceOf(this.web3.eth.coinbase)
+            .zip(this.web3Bridge.getCoinbase$(), (beeTokenCloneAddress, coinbaseAddress) => ({beeTokenCloneAddress, coinbaseAddress}))
+            .flatMap(zipResult => {
+                const beeToken = this.uninstantiatedBeeToken.at(zipResult.beeTokenCloneAddress)
+                return beeToken.balanceOf(zipResult.coinbaseAddress)
             })
             .map(balance => balance.toNumber())
     }
@@ -47,17 +50,25 @@ export default class HoneyTokenBridge {
 
     getBalance() {
         return this.honeyToken$
-            .flatMap(honeyToken => honeyToken.balanceOf(this.web3.eth.coinbase))
+            .zip(this.web3Bridge.getCoinbase$(), (honeyToken, coinbaseAddress) => ({honeyToken, coinbaseAddress}))
+            .flatMap(zipResult => zipResult.honeyToken.balanceOf(zipResult.coinbaseAddress))
             .map(balance => balance / 10 ** 18)
     }
 
     createFaucet() {
         return this.honeyFaucet$
-            .flatMap(honeyFaucet => honeyFaucet.createFaucet({from: this.web3.eth.coinbase, gas: 2000000}))
+            .zip(this.web3Bridge.getCoinbase$(), (honeyFaucet, coinbaseAddress) => ({honeyFaucet, coinbaseAddress}))
+            .flatMap(zipResult => zipResult.honeyFaucet.createFaucet({from: zipResult.coinbaseAddress, gas: 2000000}))
+    }
+
+    isFaucetExpired() {
+        return this.honeyFaucet$
+            .flatMap(honeyFaucet => honeyFaucet.currentFaucetExpired())
     }
 
     claimHoney() {
         return this.honeyFaucet$
-            .flatMap(honeyFaucet => honeyFaucet.claimHoney({from: this.web3.eth.coinbase, gas: 2000000}))
+            .zip(this.web3Bridge.getCoinbase$(), (honeyFaucet, coinbaseAddress) => ({honeyFaucet, coinbaseAddress}))
+            .flatMap(zipResult => zipResult.honeyFaucet.claimHoney({from: zipResult.coinbaseAddress, gas: 2000000}))
     }
 }

@@ -39,7 +39,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
             :
 
             <div>
-              <p>Bee has been claimed or is unavailable.</p>
+              <p>Bee has been claimed or your attestation is invalid.</p>
               <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
             </div>
 

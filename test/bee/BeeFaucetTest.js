@@ -33,21 +33,19 @@ contract("BeeFaucet", accounts => {
             const actualKycProviderPublicAddress = await beeFaucet.kycProviderPublicAddress()
             assert.equal(actualKycProviderPublicAddress, kycProviderPublicAddress, "Kyc public address is incorrect")
         })
-    })
-
-    describe("createFaucet()", () => {
 
         it("creates a new faucet with correct end time", async () => {
             const currentBlockTime = web3.eth.getBlock("latest").timestamp
             const expectedEndTime = currentBlockTime + 31540000
-            await beeFaucet.createFaucet()
             const faucetEndTime = await beeFaucet.faucetEndTime()
 
             assert.closeTo(faucetEndTime.toNumber(), expectedEndTime, 2, "Faucet end time is not equal to expected end time")
         })
+    })
+
+    describe("createFaucet()", () => {
 
         it("creates a new faucet with correct end time when old faucet has expired", async () => {
-            await beeFaucet.createFaucet()
             TestUtils.increaseTestRpcTime(web3, 31540005)
             await beeFaucet.createFaucet()
             const currentBlockTime = web3.eth.getBlock("latest").timestamp
@@ -58,15 +56,15 @@ contract("BeeFaucet", accounts => {
         })
 
         it("does not create a new faucet before old faucet has expired", async () => {
-            const maxGasUsed = 2000000
-            await beeFaucet.createFaucet()
             TestUtils.increaseTestRpcTime(web3, 31539999)
+            const maxGasUsed = 2000000
 
             await TestUtils.assertThrows(() => beeFaucet.createFaucet({gas: maxGasUsed}), maxGasUsed)
         })
 
         it("creates a new Bee token", async () => {
             const currentBeeTokenAddress = await beeFaucet.getBeeTokenAddress();
+            TestUtils.increaseTestRpcTime(web3, 31540000)
             await beeFaucet.createFaucet()
             const newBeeTokenAddress = await beeFaucet.getBeeTokenAddress()
 

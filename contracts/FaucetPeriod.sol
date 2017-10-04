@@ -6,8 +6,6 @@ contract FaucetPeriod {
     uint public faucetLength;
     uint public faucetEndTime;
 
-    modifier currentFaucetExpired() { require(now > faucetEndTime); _; }
-
     /**
      * @notice Set the period length of the faucet.
      * @param _periodLength Period for which a faucet cannot be created since previous faucet.
@@ -17,10 +15,19 @@ contract FaucetPeriod {
     }
 
     /**
+     * @notice Checks if the current faucet has expired.
+     * @return true if expired, false otherwise.
+     */
+    function currentFaucetExpired() public constant returns (bool) {
+        return now > faucetEndTime;
+    }
+
+    /**
      * @notice Create the faucet specified in setupFaucet().
      *         Restricted by the specified faucet period length.
      */
-    function createFaucet() public currentFaucetExpired {
+    function createFaucet() public {
+        require(currentFaucetExpired());
         // Should probably use block height but it's harder to test so we'll use block time for now.
         faucetEndTime = now + faucetLength;
         setupFaucet();

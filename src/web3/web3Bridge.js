@@ -1,4 +1,5 @@
 import {convertToPromise} from "../../utils/Utils.js"
+import * as Rx from "rxjs";
 
 export default class Web3Bridge {
 
@@ -6,7 +7,8 @@ export default class Web3Bridge {
         this.web3 = web3
     }
 
-    getUsersAccounts() {
-        return convertToPromise(this.web3.eth.getAccounts)
+    getCoinbase$() {
+        return Rx.Observable
+            .fromPromise(convertToPromise(this.web3.eth.getCoinbase))
     }
 }

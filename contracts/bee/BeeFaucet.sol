@@ -21,9 +21,9 @@ contract BeeFaucet is Ownable, FaucetPeriod {
      */
     function BeeFaucet(address _miniMeTokenFactoryAddress, address _appPublicAddress) {
         miniMeTokenFactoryAddress = _miniMeTokenFactoryAddress;
-        beeToken = new MiniMeToken(_miniMeTokenFactoryAddress, 0, 0, "Bee", 18, "BEE", true);
         kycProviderPublicAddress = _appPublicAddress;
         setFaucetPeriodLength(31540000); // ~ 1 year in seconds
+        createFaucet();
     }
 
     function getBeeTokenAddress() constant public returns (address) {
