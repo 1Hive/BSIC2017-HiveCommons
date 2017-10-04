@@ -21,15 +21,15 @@ export function loginUser() {
       verified: ["Uniqueness"] // We need the JWT field from the object specified here to claim Bee.
     }).then((credentials) => {
 
-      // Check out the console to see what data we get from uPort. We need to save it somewhere for use when we want to claim Bee.
+      // check for Uniqueness, and set into credentials
+      const attestation = credentials.verified.filter(_attestation => "Uniqueness" in _attestation.claim)[0]
+      if(attestation){
+          credentials.jwt = attestation.jwt
+          credentials.isUnique = true
+      }
+
+      // Check out the console to see what data we get from uPort.
       console.log(credentials)
-
-      // Setup the credentials object with 'isUnique' for display convenience, and 'jwt' to use later in the claim function
-      credentials.jwt = credentials.verified
-        .filter(_attestation => "Uniqueness" in _attestation.claim)[0]
-        .jwt
-      credentials.isUnique = !!credentials.jwt
-
       dispatch(userLoggedIn(credentials))
 
       // Used a manual redirect here as opposed to a wrapper.

@@ -28,23 +28,24 @@ const claimBee = function() {
 
 const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
 
+
+
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <div>
 
-      {beeToken.beeIsClaimable ?
+      {userData.isUnique ?
 
-        <button className="pure-button button-xlarge" onClick={claimBee}>
-          Claim BEE Token
-        </button>
+        <div>
+
+          <button className="pure-button button-xlarge" onClick={claimBee}> Claim BEE Token </button>
+          <p>Bee has been claimed</p>
+          <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
+
+        </div>
 
       :
 
-        <div>
-          <p>Bee has been claimed</p>
-          <div>
-            Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"}
-          </div>
-        </div>
+        <AttestationLink/>
 
       }
 
@@ -60,21 +61,9 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
 
   const AttestationLink = () =>
     <div>
-      <br/>
-      <button className="pure-button button-xlarge" onClick={() => {
-
-        console.log("Granting logged in user an attestation, note will error if the user is not logged in.")
-        generateUniquenessAttestation(userData.address)
-
-      }}>
-        Create Attestation for logged in user
-      </button>
-      <br/>
-      Note that this would actually be granted to the user by a third party / KYC provider.
-      <br/> This only needs to be done once for the app that's registered in this web app.
-      <br/>
-      <br/>Once an attestation has been granted the user needs to refresh this screen and
-      <br/>log back into their uPort account before they can claim a BEE token.
+      <p>In order to cliam a BEE token you need to have an attestation that you are unique.</p>
+      <p>If you have recieved this in the last few minutes or so it may not yet be active. </p>
+      <a href="http://attest.servesa.io">Get attestation</a>
     </div>
 
   return (
