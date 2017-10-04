@@ -26,16 +26,29 @@ export default class BeeTokenBridge {
 
     canClaimBee(jwt) {
         const formattedJwt = formatJwt(jwt)
-        console.log(formattedJwt)
+        return this.claimBeeVValue(formattedJwt)
+            .map(anything => true)
+            .defaultIfEmpty(false)
+    }
+
+    canClaimBeeWithV(formattedJwt, v) {
         return this.beeFaucet$
-            .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, 28, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
+            .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, v, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
+            .filter(canClaim => canClaim)
+            .map(canClaim => v)
+    }
+
+    claimBeeVValue(formattedJwt) {
+      return this.canClaimBeeWithV(formattedJwt, 27)
+        .merge(this.canClaimBeeWithV(formattedJwt, 28))
     }
 
     claimBeeToken(jwt) {
         const formattedJwt = formatJwt(jwt)
-        return this.beeFaucet$
-            .flatMap(beeFaucet => beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 28, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
-                {from: this.web3.eth.coinbase, gas: 2000000}))
+        return this.claimBeeVValue(formattedJwt)
+              .flatMap(signatureVValue => this.beeFaucet$
+                  .flatMap(beeFaucet => beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, signatureVValue, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
+                      {from: this.web3.eth.coinbase, gas: 2000000})))
     }
 
     getBeeTokenBalance() {
