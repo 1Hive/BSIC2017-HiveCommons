@@ -35,12 +35,18 @@ pre {
   text-align: center;
 }
 
+
+.pure-button {
+  border-radius: 0.5em;
+}
+
+
 .pure-button-primary {
-  background-color: #0c1a2b;
+  background-color: #33D76D;
 }
 
 .pure-button-primary:hover {
-  background-color: #233e5e;
+  background-color: #1fbf58;
 }
 
 .pure-form input[type="text"]:focus {
@@ -92,9 +98,41 @@ pre {
   border: 2px solid #E88523;
 }
 
-/*Faucet*/
+/**/
+.intructions{
+  text-align: left;
+}
+.intructions ul{
+  list-style: none;
+}
 
-.pure-button .uport-logo {
+.instruction-box{
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-left: -50px;
+  text-align: center;
+}
+
+.pure-button.attest-app {
+  background: gray;
+  border-radius: .5em;
+  color: #eeeeee;
+}
+
+/*uPort*/
+.pure-button.uport {
+  background: #5f32b8;
+  border-radius: .5em;
+  color: #eeeeee;
+}
+
+.button-icon {
+  color: white;
   height: 16px;
+}
+.button-icon-left{
+  margin-left: 10px;
+}
+.button-icon-right{
   margin-right: 10px;
 }

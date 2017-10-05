@@ -36,6 +36,7 @@ ReactDOM.render((
 
           <Route path="faucet/bee" component={BeeFaucet} />
           <Route path="faucet/hny" component={HoneyFaucet} />
+
           <Route path='*' exact={true} component={Page404} />
         </Route>
       </Router>

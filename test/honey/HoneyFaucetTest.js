@@ -5,7 +5,7 @@ const HoneyFaucet = artifacts.require("HoneyFaucet.sol")
 const HoneyToken = artifacts.require("HoneyToken.sol")
 
 const TestUtils = require("../TestUtils.js")
-const ValidationUtils = require("../../utils/ValidationUtils.js")
+const ValidationUtils = require("../../src/utils/ValidationUtils.js")
 
 // Some of these tests will only run on TestRpc, those using evm_increaseTime (TestUtils.increaseTestRpcTime()).
 contract("HoneyFaucet", accounts => {
