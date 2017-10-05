@@ -1,7 +1,7 @@
 const MiniMeTokenFactory = artifacts.require("MiniMeTokenFactory.sol")
 const MiniMeToken = artifacts.require("MiniMeToken.sol")
 const BeeFaucet = artifacts.require("BeeFaucet.sol")
-const ValidationUtils = require("../../utils/ValidationUtils.js")
+const ValidationUtils = require("../../src/utils/ValidationUtils.js")
 const TestUtils = require("../TestUtils.js")
 
 contract("BeeFaucet", accounts => {
