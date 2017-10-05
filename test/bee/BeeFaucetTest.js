@@ -64,7 +64,7 @@ contract("BeeFaucet", accounts => {
 
         it("creates a new Bee token", async () => {
             const currentBeeTokenAddress = await beeFaucet.getBeeTokenAddress();
-            TestUtils.increaseTestRpcTime(web3, 31540000)
+            TestUtils.increaseTestRpcTime(web3, 31540001)
             await beeFaucet.createFaucet()
             const newBeeTokenAddress = await beeFaucet.getBeeTokenAddress()
 
