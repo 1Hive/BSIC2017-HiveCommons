@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router'
+
 import {HiddenOnlyAuth, VisibleOnlyAuth} from '../../util/wrappers.js'
 import {beeTokenBridge} from "../../web3/dependencies";
 import {generateUniquenessAttestation} from "../../web3/attestationBridge";
@@ -55,6 +57,8 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable})
             <div>
               <p>Congrats! You have claimed your BEE token!</p>
               <p>Bee Balance: {bee.beeBalance ? bee.beeBalance.toNumber() : "loading"} </p>
+              <p>You can use your BEE token to claim HNY each month:</p>
+              <Link className='pure-button pure-button-primary' to='/faucet/hny'>View HNY Faucet</Link>
             </div>
 
             :
@@ -80,7 +84,7 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable})
 
         <div>
           <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
-            <a className='pure-button attest-app'
+            <a className='pure-button pure-button-link'
               href="http://attest.servesa.io"
               target='_blank'
               rel='noopener norefferer'>
@@ -119,7 +123,7 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable})
           <h2>Before you begin</h2>
           <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
           <div className=''>
-            <a className='pure-button pure-button-primary'
+            <a className='pure-button pure-button-link pure-button-primary'
               href="http://attest.servesa.io"
               target='_blank'
               rel='noopener norefferer'>
