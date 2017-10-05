@@ -34,11 +34,12 @@ export default class HoneyTokenBridge {
     beeAvailableInClone() {
         return this.honeyFaucet$
             .flatMap(honeyFaucet => honeyFaucet.getBeeTokenCloneAddress())
-            .zip(this.web3Bridge.getCoinbase$(), (beeTokenCloneAddress, coinbaseAddress) => ({beeTokenCloneAddress, coinbaseAddress}))
-            .flatMap(zipResult => {
-                const beeToken = this.uninstantiatedBeeToken.at(zipResult.beeTokenCloneAddress)
-                return beeToken.balanceOf(zipResult.coinbaseAddress)
-            })
+            .map(beeTokenCloneAddress => this.uninstantiatedBeeToken.at(beeTokenCloneAddress))
+            .zip(this.web3Bridge.getCoinbase$(), (beeTokenClone, coinbaseAddress) => ({
+                beeTokenClone,
+                coinbaseAddress
+            }))
+            .flatMap(zipResult => zipResult.beeTokenClone.balanceOf(zipResult.coinbaseAddress))
             .map(balance => balance.toNumber())
     }
 

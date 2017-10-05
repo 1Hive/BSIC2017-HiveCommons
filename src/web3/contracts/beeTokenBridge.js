@@ -18,7 +18,7 @@ export default class BeeTokenBridge {
 
         this.beeToken$ = this.beeFaucet$
             .flatMap(_beeFaucet => _beeFaucet.getBeeTokenAddress())
-            .flatMap(beeTokenAddress => beeToken.at(beeTokenAddress))
+            .map(beeTokenAddress => beeToken.at(beeTokenAddress))
             .shareReplay(1)
 
         this.web3Bridge = web3Bridge
@@ -59,6 +59,6 @@ export default class BeeTokenBridge {
     getBeeTokenBalance() {
         return this.web3Bridge.getCoinbase$()
             .zip(this.beeToken$, (coinbaseAddress, beeToken) => ({coinbaseAddress, beeToken}))
-            .flatMap(zipResult => zipResult.beeToken.balanceOf(zipResult.coinbaseAddress));
+            .flatMap(zipResult => zipResult.beeToken.balanceOf(zipResult.coinbaseAddress))
     }
 }

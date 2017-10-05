@@ -30,7 +30,7 @@ contract BeeFaucet is Ownable, FaucetPeriod {
         createFaucet();
     }
 
-    function getBeeTokenAddress() constant public returns (address) {
+    function getBeeTokenAddress() public constant returns (address) {
         return address(beeToken);
     }
 
