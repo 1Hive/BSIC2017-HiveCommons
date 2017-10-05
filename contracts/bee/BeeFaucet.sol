@@ -5,8 +5,8 @@ import "../FaucetPeriod.sol";
 import "./MiniMeToken.sol";
 
 /**
- * @notice A faucet that can be reset once a year and enables the claiming of one Bee token
- *         for each unclaimed uniquely identifying attestation.
+ * @notice A faucet that can be reset once a year and enables the claiming of
+ *         one Bee token for each unclaimed uniquely identifying attestation.
  * TODO: Should be up upgradable somehow (not sure how yet) as verification process could change in the future.
  */
 contract BeeFaucet is Ownable, FaucetPeriod {

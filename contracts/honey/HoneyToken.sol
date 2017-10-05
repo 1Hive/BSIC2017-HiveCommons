@@ -2,6 +2,9 @@ pragma solidity ^0.4.15;
 
 import "zeppelin-solidity/contracts/token/MintableToken.sol";
 
+/**
+ * @notice Standard Mintable ERC20 token.
+ */
 contract HoneyToken is MintableToken {
 
     string public name;
@@ -13,5 +16,4 @@ contract HoneyToken is MintableToken {
         decimals = 18;
         symbol = "HNY";
     }
-
 }

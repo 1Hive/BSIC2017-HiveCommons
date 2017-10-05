@@ -5,6 +5,10 @@ import "./HoneyToken.sol";
 import "../bee/BeeFaucet.sol";
 import "../bee/MiniMeToken.sol";
 
+/**
+ * @notice A faucet that can be reset once a month which enables claiming a proportional share of
+ *         Honey tokens for each Bee token a user owns at the time of faucet creation.
+ */
 contract HoneyFaucet is FaucetPeriod {
 
     HoneyToken private honeyToken;

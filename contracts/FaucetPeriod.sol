@@ -1,6 +1,8 @@
 pragma solidity ^0.4.15;
 
-
+/**
+ * @notice Abstract contract which represents a faucet period and restricts creation to the period specified.
+ */
 contract FaucetPeriod {
 
     uint public faucetLength;
