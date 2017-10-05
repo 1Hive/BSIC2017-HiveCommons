@@ -1,6 +1,6 @@
 import {
-  UPDATE_BEE_BALANCE, UPDATE_HONEY_BALANCE, UPDATE_BEE_CLAIMABLE, UPDATE_BEE_AVAILABLE_FOR_CLAIMING,
-  UPDATE_HONEY_TO_BEE_RATE
+    UPDATE_BEE_BALANCE, UPDATE_HONEY_BALANCE, UPDATE_BEE_CLAIMABLE, UPDATE_BEE_AVAILABLE_FOR_CLAIMING,
+    UPDATE_HONEY_TO_BEE_RATE, UPDATE_HONEY_FAUCET_EXPIRED
 } from "./faucetActions"
 
 const beeInitialState = {
@@ -8,7 +8,7 @@ const beeInitialState = {
     beeIsClaimable: false
 }
 
-export const beeBalanceReducer = (state = beeInitialState, action) => {
+export const beeDataReducer = (state = beeInitialState, action) => {
     switch (action.type) {
         case UPDATE_BEE_BALANCE:
             return Object.assign({}, state, {
@@ -25,10 +25,11 @@ export const beeBalanceReducer = (state = beeInitialState, action) => {
 const honeyInitialState = {
     honeyBalance: null,
     beeAvailableForClaiming: null,
-    honeyToBeeRate: null
+    honeyToBeeRate: null,
+    honeyFaucetExpired: null
 }
 
-export const honeyBalanceReducer = (state = honeyInitialState, action) => {
+export const honeyDataReducer = (state = honeyInitialState, action) => {
     switch (action.type) {
         case UPDATE_HONEY_BALANCE:
             return Object.assign({}, state, {
@@ -41,6 +42,10 @@ export const honeyBalanceReducer = (state = honeyInitialState, action) => {
         case UPDATE_HONEY_TO_BEE_RATE:
             return Object.assign({}, state, {
                 honeyToBeeRate: action.honeyToBeeRate
+            })
+        case UPDATE_HONEY_FAUCET_EXPIRED:
+            return Object.assign({}, state, {
+                honeyFaucetExpired: action.honeyFaucetExpired
             })
     }
     return state

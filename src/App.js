@@ -18,7 +18,7 @@ import store from "./store";
 import {
   updateBeeAvailableForClaiming,
   updateBeeBalance,
-  updateHoneyBalance,
+  updateHoneyBalance, updateHoneyFaucetExpired,
   updateHoneyToBeeRate
 } from "./layouts/faucet/faucetActions";
 
@@ -38,6 +38,7 @@ loadWeb3
     store.dispatch(updateHoneyBalance())
     store.dispatch(updateHoneyToBeeRate())
     store.dispatch(updateBeeAvailableForClaiming())
+    store.dispatch(updateHoneyFaucetExpired())
   })
 
 class App extends Component {

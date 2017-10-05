@@ -22,6 +22,7 @@ export const updatedBeeClaimable = (isBeeClaimable) => {
 export const UPDATE_HONEY_BALANCE = 'UPDATE_HONEY_BALANCE'
 export const UPDATE_BEE_AVAILABLE_FOR_CLAIMING = 'UPDATE_BEE_AVAILABLE_FOR_CLAIMING'
 export const UPDATE_HONEY_TO_BEE_RATE = 'UPDATE_HONEY_TO_BEE_RATE'
+export const UPDATE_HONEY_FAUCET_EXPIRED = 'UPDATE_HONEY_FAUCET_EXPIRED'
 
 export const updatedHoneyBalance = (honeyBalance) => {
     return {
@@ -39,6 +40,12 @@ export const updatedHoneyToBeeRate = (honeyToBeeRate) => {
     return {
         type: UPDATE_HONEY_TO_BEE_RATE,
         honeyToBeeRate
+    }
+}
+export const updatedHoneyFaucetExpired = (honeyFaucetExpired) => {
+    return {
+        type: UPDATE_HONEY_FAUCET_EXPIRED,
+        honeyFaucetExpired
     }
 }
 
@@ -78,5 +85,12 @@ export const updateHoneyToBeeRate = () => {
     return dispatch => {
         dependencies.honeyTokenBridge.getHoneyForBeeRate()
             .subscribe(honeyToBeeRate => dispatch(updatedHoneyToBeeRate(honeyToBeeRate)))
+    }
+}
+
+export const updateHoneyFaucetExpired = () => {
+    return dispatch => {
+        dependencies.honeyTokenBridge.isFaucetExpired()
+            .subscribe(honeyFaucetExpired => dispatch(updatedHoneyFaucetExpired(honeyFaucetExpired)))
     }
 }

@@ -15,7 +15,7 @@ import linkOutSVG from '../../img/linkout.svg'
 import checkmark from '../../img/checkmark.svg'
 import xmark from '../../img/X_mark.svg'
 
-const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaimable}) => {
+const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable}) => {
 
   const claimBee = function () {
     const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
@@ -40,7 +40,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
   const BeeFaucetAuth = VisibleOnlyAuth(() =>
     <div>
 
-      {userData.isUnique && beeToken.beeIsClaimable ?
+      {userData.isUnique && bee.beeIsClaimable ?
 
         <button
           className="pure-button pure-button-primary"
@@ -50,11 +50,11 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
       :
 
         <div>
-          {beeToken.beeBalance > 0 ?
+          {bee.beeBalance > 0 ?
 
             <div>
               <p>Congrats! You have claimed your BEE token!</p>
-              <p>Bee Balance: {beeToken.beeBalance ? beeToken.beeBalance.toNumber() : "loading"} </p>
+              <p>Bee Balance: {bee.beeBalance ? bee.beeBalance.toNumber() : "loading"} </p>
             </div>
 
             :
@@ -145,7 +145,7 @@ const BeeFaucetInner = ({userData, beeToken, updateBeeBalance, updateBeeIsClaima
 
 const mapStateToProps = state => ({
   userData: state.user.data,
-  beeToken: state.beeBalance
+  bee: state.bee
 })
 
 const mapDispatchToProps = dispatch => ({
