@@ -1,12 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 import ProgressButton from 'react-progress-button'
 
 import {HiddenOnlyAuth, VisibleOnlyAuth} from '../../util/wrappers.js'
 import {beeTokenBridge} from "../../web3/dependencies";
 import {generateUniquenessAttestation} from "../../web3/attestationBridge";
 import {connect} from "react-redux"
-import {updateBeeBalance, updateBeeClaimable} from "./faucetActions"
+import {updateBeeBalance, updateBeeClaimable, updatedBeeClaimLoading} from "./faucetActions"
 
 // UI Components
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
@@ -17,19 +17,21 @@ import * as Utils from "../../utils/Utils";
 import linkOutSVG from '../../img/linkout.svg'
 import checkmark from '../../img/checkmark.svg'
 import xmark from '../../img/X_mark.svg'
+import "./Faucet.css"
 
-const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBeeIsClaimable, progressTest}) => {
+const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable, updateBeeClaimLoading}) => {
 
   const claimBee = function () {
+    updateBeeClaimLoading(true)
     const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
 
     beeTokenBridge.claimBeeToken(jwt)
       .subscribe(() => {
-          console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-          updateBeeBalance()
-          updateBeeIsClaimable(jwt)
-        }
-      )
+        console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
+        updateBeeBalance()
+        updateBeeIsClaimable(jwt)
+        updateBeeClaimLoading(false)
+      })
   }
 
   const BeeFaucetGuest = HiddenOnlyAuth(() =>
@@ -45,12 +47,19 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
 
       {userData.isUnique && bee.beeIsClaimable ?
 
-        <button
-          className="pure-button pure-button-primary"
-          onClick={claimBee}> Claim BEE Token
-        </button>
+        <div>
+          <button
+            className="pure-button pure-button-primary"
+            onClick={claimBee}> Claim BEE Token
+          </button>
 
-      :
+          {bee.claimBeeLoading ?
+            <div className="loader"/>
+            : null}
+
+        </div>
+
+        :
 
         <div>
           {bee.beeBalance > 0 ?
@@ -84,14 +93,15 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
       {!userData.isUnique ?
 
         <div>
-          <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
-            <a className='pure-button pure-button-link'
-              href="http://attest.servesa.io"
-              target='_blank'
-              rel='noopener norefferer'>
-                Get attestation
-                <img className='button-icon button-icon-left' src={linkOutSVG}></img>
-            </a>
+          <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that
+            certifies that you are unique. Then return here to claim your BEE token.</p>
+          <a className='pure-button pure-button-link'
+             href="http://attest.servesa.io"
+             target='_blank'
+             rel='noopener norefferer'>
+            Get attestation
+            <img className='button-icon button-icon-left' src={linkOutSVG}></img>
+          </a>
         </div>
         :
         null
@@ -103,7 +113,8 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
   const GetAttestationLink = () =>
     <div>
       <p>In order to cliam a BEE token you need to have an attestation that you are unique.</p>
-      <p>Once you have received the attestation you must refresh this page and log back in again to be able to claim Bee.</p>
+      <p>Once you have received the attestation you must refresh this page and log back in again to be able to claim
+        Bee.</p>
       <a href="http://attest.servesa.io">Get attestation</a>
 
       <button className='pure-button' onClick={(() => generateUniquenessAttestation(userData.address))}>attest</button>
@@ -117,19 +128,21 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
         <div className="pure-u-1 pure-u-md-1-2">
 
           <h1> BEE Token Faucet</h1>
-          <p>BEE tokens ensure that HNY tokens are being distributed evenly – one BEE token is issued to each person. Use your BEE token to claim HNY tokens each month.</p>
+          <p>BEE tokens ensure that HNY tokens are being distributed evenly – one BEE token is issued to each person.
+            Use your BEE token to claim HNY tokens each month.</p>
 
           <hr></hr>
 
           <h2>Before you begin</h2>
-          <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that certifies that you are unique. Then return here to claim your BEE token.</p>
+          <p>You must have an approved uniqueness attestor service add an attestation to your uPort profile that
+            certifies that you are unique. Then return here to claim your BEE token.</p>
           <div className=''>
             <a className='pure-button pure-button-link pure-button-primary'
-              href="http://attest.servesa.io"
-              target='_blank'
-              rel='noopener norefferer'>
-                Get attestation
-                <img className='button-icon button-icon-left' src={linkOutSVG}></img>
+               href="http://attest.servesa.io"
+               target='_blank'
+               rel='noopener norefferer'>
+              Get attestation
+              <img className='button-icon button-icon-left' src={linkOutSVG}></img>
             </a>
           </div>
           <br></br>
@@ -142,18 +155,8 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
           <BeeFaucetAuth/>
 
 
-          <hr></hr>
 
 
-          <ProgressButton className="" onClick={() => {
-
-            return new Promise(function(resolve, reject) {
-              setTimeout(resolve, 4000)
-            })
-
-          }}>
-            Create Faucet
-          </ProgressButton>
 
         </div>
       </div>
@@ -164,10 +167,7 @@ const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBee
 
 const mapStateToProps = state => ({
   userData: state.user.data,
-  bee: state.bee,
-  buttonState: {
-    test: ''
-  }
+  bee: state.bee
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -176,6 +176,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateBeeIsClaimable: (jwt) => {
     dispatch(updateBeeClaimable(jwt))
+  },
+  updateBeeClaimLoading: (beeClaimLoading) => {
+    dispatch(updatedBeeClaimLoading(beeClaimLoading))
   }
 })
 

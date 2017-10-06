@@ -3,6 +3,7 @@ import * as dependencies from "../../web3/dependencies";
 // BEE Actions
 export const UPDATE_BEE_BALANCE = 'UPDATE_BEE_BALANCE'
 export const UPDATE_BEE_CLAIMABLE = 'UPDATE_BEE_CLAIMABLE'
+export const UPDATE_BEE_CLAIM_LOADING = 'UPDATE_BEE_CLAIM_LOADING'
 
 export const updatedBeeBalance = (beeBalance) => {
     return {
@@ -16,6 +17,12 @@ export const updatedBeeClaimable = (isBeeClaimable) => {
         isBeeClaimable
     }
 }
+export const updatedBeeClaimLoading = (beeClaimLoading) => {
+    return {
+        type: UPDATE_BEE_CLAIM_LOADING,
+        beeClaimLoading
+    }
+}
 
 
 // HNY Actions
@@ -23,6 +30,8 @@ export const UPDATE_HONEY_BALANCE = 'UPDATE_HONEY_BALANCE'
 export const UPDATE_BEE_AVAILABLE_FOR_CLAIMING = 'UPDATE_BEE_AVAILABLE_FOR_CLAIMING'
 export const UPDATE_HONEY_TO_BEE_RATE = 'UPDATE_HONEY_TO_BEE_RATE'
 export const UPDATE_HONEY_FAUCET_EXPIRED = 'UPDATE_HONEY_FAUCET_EXPIRED'
+export const UPDATE_HONEY_CLAIM_LOADING = 'UPDATE_HONEY_CLAIM_LOADING'
+export const UPDATE_HONEY_CREATE_FAUCET_LOADING = 'UPDATE_HONEY_CREATE_FAUCET_LOADING'
 
 export const updatedHoneyBalance = (honeyBalance) => {
     return {
@@ -46,6 +55,18 @@ export const updatedHoneyFaucetExpired = (honeyFaucetExpired) => {
     return {
         type: UPDATE_HONEY_FAUCET_EXPIRED,
         honeyFaucetExpired
+    }
+}
+export const updatedHoneyClaimLoading = (honeyClaimLoading) => {
+    return {
+        type: UPDATE_HONEY_CLAIM_LOADING,
+        honeyClaimLoading
+    }
+}
+export const updatedHoneyCreateFaucetLoading = (honeyCreateFaucetLoading) => {
+    return {
+        type: UPDATE_HONEY_CREATE_FAUCET_LOADING,
+        honeyCreateFaucetLoading
     }
 }
 

@@ -3,78 +3,92 @@ import ProgressButton from 'react-progress-button'
 
 import {honeyTokenBridge} from '../../web3/dependencies.js'
 import {
-  updateBeeAvailableForClaiming,
+  updateBeeAvailableForClaiming, updatedHoneyClaimLoading, updatedHoneyCreateFaucetLoading,
   updateHoneyBalance,
   updateHoneyFaucetExpired,
   updateHoneyToBeeRate
 } from "./faucetActions";
 import {connect} from "react-redux";
+import "./Faucet.css"
 
 
+const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate, updateBeeClaimableForHoney, updateHoneyFaucetExpired, updateHoneyClaimLoading, updateHoneyCreateFaucetLoading}) => {
 
-
-const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate, updateBeeClaimableForHoney, updateHoneyFaucetExpired}) => {
-
-  const claimHoney = () =>
+  const claimHoney = () => {
+    updateHoneyClaimLoading(true)
     honeyTokenBridge.claimHoney().subscribe(() => {
       console.log("Honey sent to sending users account")
       updateHoneyBalance()
       updateBeeClaimableForHoney()
+      updateHoneyClaimLoading(false)
     })
+  }
 
+
+  const CreateFaucet = () =>
+    <div>
+      <div>
+        <button className="pure-button pure-button-primary" onClick={() => {
+          updateHoneyCreateFaucetLoading(true)
+          honeyTokenBridge.createFaucet().subscribe(tx => {
+            console.log("Honey faucet has been created")
+            updateHoneyToBeeRate()
+            updateBeeClaimableForHoney()
+            updateHoneyFaucetExpired()
+            updateHoneyCreateFaucetLoading(false)
+          })
+
+        }}>
+          Create Faucet
+        </button>
+
+        {honey.honeyCreateFaucetLoading ?
+          <div className="loader"/>
+          : null}
+
+        <p>It should not be called until everyone has claimed their BEE tokens.</p>
+        <p>BEE tokens claimed after faucet creation cannot claim from that faucet.</p>
+      </div>
+    </div>
 
   const HoneyTable = () =>
     <div>
       <h2>Claim HNY Tokens</h2>
       <table className="pure-table pure-table-bordered">
         <tbody>
-          <tr>
-            <td className="text-cell">Total BEE Token Balance:</td>
-            <td className="number-cell">{bee.beeBalance === null ? "loading" : bee.beeBalance.toNumber()}</td>
-          </tr>
-          <tr>
-            <td className="text-cell">Eligible BEE Token Balance:</td>
-            <td className="number-cell">{honey.beeAvailableForClaiming === null ? "loading" : honey.beeAvailableForClaiming}</td>
-          </tr>
-          <tr>
-            <td className="text-cell">
-              <em>Conversion Rate: 1 BEE = {honey.honeyToBeeRate ? honey.honeyToBeeRate : "loading"}&nbsp;HNY</em>
-            </td>
-            <td className="number-cell">
-              <button
-                className="pure-button pure-button-primary"
-                onClick={claimHoney}
-                disabled={!honey.beeAvailableForClaiming}
-                > Claim HNY
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="text-cell">Your current HNY Balance:</td>
-            <td className="number-cell">{honey.honeyBalance === null ? "loading" : honey.honeyBalance}</td>
-          </tr>
+        <tr>
+          <td className="text-cell">Total BEE Token Balance:</td>
+          <td className="number-cell">{bee.beeBalance === null ? "loading" : bee.beeBalance.toNumber()}</td>
+        </tr>
+        <tr>
+          <td className="text-cell">Eligible BEE Token Balance:</td>
+          <td
+            className="number-cell">{honey.beeAvailableForClaiming === null ? "loading" : honey.beeAvailableForClaiming}</td>
+        </tr>
+        <tr>
+          <td className="text-cell">
+            <em>Conversion Rate: 1 BEE = {honey.honeyToBeeRate ? honey.honeyToBeeRate : "loading"}&nbsp;HNY</em>
+          </td>
+          <td className="number-cell">
+            <button
+              className="pure-button pure-button-primary"
+              onClick={claimHoney}
+              disabled={!honey.beeAvailableForClaiming}
+            > Claim HNY
+            </button>
+
+            {honey.honeyClaimLoading ?
+              <div className="loader"/>
+              : null}
+
+          </td>
+        </tr>
+        <tr>
+          <td className="text-cell">Your current HNY Balance:</td>
+          <td className="number-cell">{honey.honeyBalance === null ? "loading" : honey.honeyBalance}</td>
+        </tr>
         </tbody>
       </table>
-    </div>
-
-  const CreateFaucet = () =>
-    <div>
-      <div>
-        <ProgressButton className="pure-button button-xlarge" onClick={() => {
-
-          honeyTokenBridge.createFaucet().subscribe(tx => {
-            console.log("Honey faucet has been created")
-            updateHoneyToBeeRate()
-            updateBeeClaimableForHoney()
-            updateHoneyFaucetExpired()
-          })
-
-        }}>
-          Create Faucet
-        </ProgressButton>
-        <p>It should not be called until everyone has claimed their BEE tokens.</p>
-        <p>BEE tokens claimed after faucet creation cannot claim from that faucet.</p>
-      </div>
     </div>
 
   return (
@@ -90,9 +104,9 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
             <div className="pure-u-1-2">
 
               {honey.honeyFaucetExpired ?
-                  <CreateFaucet/>
+                <CreateFaucet/>
                 :
-                  <HoneyTable/>
+                <HoneyTable/>
               }
 
             </div>
@@ -122,6 +136,12 @@ const mapDispatchToProps = dispatch => ({
   },
   updateHoneyFaucetExpired: () => {
     dispatch(updateHoneyFaucetExpired())
+  },
+  updateHoneyClaimLoading: (honeyClaimLoading) => {
+    dispatch(updatedHoneyClaimLoading(honeyClaimLoading))
+  },
+  updateHoneyCreateFaucetLoading: (createFaucetLoading) => {
+    dispatch(updatedHoneyCreateFaucetLoading(createFaucetLoading))
   }
 })
 
