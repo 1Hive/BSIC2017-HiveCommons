@@ -56,7 +56,7 @@ contract HoneyFaucet is FaucetPeriod {
     function setHoneyForBeeRate() private {
         uint totalHoney = honeyToken.totalSupply();
         // This works out at more than 15% a year but keeping track of the year or doing more complex math is out of scope for now.
-        uint yearlyIncrease = (totalHoney / 100) * 15; // 15% of current supply.
+        uint yearlyIncrease = (totalHoney / 100) * 25; // 25% of current supply.
         uint currentFaucetTotalDistribution = yearlyIncrease / 12; // monthly increase, current faucet supply.
         uint currentFaucetTotalBee = beeTokenClone.totalSupply();
 
