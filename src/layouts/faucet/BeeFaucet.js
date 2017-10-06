@@ -73,7 +73,7 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable, 
 
             :
 
-            <p>BEE token is unavailable, not sure why :/</p>
+            <p>You have already claimed a BEE token for the attestation in your uPort ID.</p>
           }
         </div>
 
