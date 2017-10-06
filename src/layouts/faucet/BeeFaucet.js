@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
+import ProgressButton from 'react-progress-button'
 
 import {HiddenOnlyAuth, VisibleOnlyAuth} from '../../util/wrappers.js'
 import {beeTokenBridge} from "../../web3/dependencies";
@@ -17,7 +18,7 @@ import linkOutSVG from '../../img/linkout.svg'
 import checkmark from '../../img/checkmark.svg'
 import xmark from '../../img/X_mark.svg'
 
-const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable}) => {
+const BeeFaucetInner = ({buttonState, userData, bee, updateBeeBalance, updateBeeIsClaimable, progressTest}) => {
 
   const claimBee = function () {
     const jwt = Utils.getJwtForAttestation(userData.verified, "Uniqueness")
@@ -141,15 +142,32 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable})
           <BeeFaucetAuth/>
 
 
+          <hr></hr>
+
+
+          <ProgressButton className="" onClick={() => {
+
+            return new Promise(function(resolve, reject) {
+              setTimeout(resolve, 4000)
+            })
+
+          }}>
+            Create Faucet
+          </ProgressButton>
+
         </div>
       </div>
     </main>
   )
 }
 
+
 const mapStateToProps = state => ({
   userData: state.user.data,
-  bee: state.bee
+  bee: state.bee,
+  buttonState: {
+    test: ''
+  }
 })
 
 const mapDispatchToProps = dispatch => ({

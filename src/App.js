@@ -11,7 +11,9 @@ import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './css/grids-responsive-min.css'
+import './ProgressButton.css'
 import './App.css'
+
 import {loadWeb3} from "./web3/getWeb3";
 import {createDependencies} from "./web3/dependencies";
 import store from "./store";

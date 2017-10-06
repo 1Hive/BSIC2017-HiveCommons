@@ -1,4 +1,6 @@
 import React from 'react'
+import ProgressButton from 'react-progress-button'
+
 import {honeyTokenBridge} from '../../web3/dependencies.js'
 import {
   updateBeeAvailableForClaiming,
@@ -20,29 +22,6 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
       updateBeeClaimableForHoney()
     })
 
-  //
-  // const ClaimHoney = () =>
-  //   <div>
-  //     {honey.beeAvailableForClaiming === 0 ?
-  //
-  //       <p>No Bee available for claiming Honey in this faucet period.</p>
-  //
-  //     :
-  //
-  //       <div>
-  //         <p>
-  //           <strong>Conversion Rate:</strong> 1 BEE = {honey.honeyToBeeRate ? honey.honeyToBeeRate : "loading"}&nbsp;HNY
-  //         </p>
-  //         <button
-  //           className="pure-button button-xlarge"
-  //           onClick={claimHoney}>
-  //             Claim Honey
-  //         </button>
-  //       </div>
-  //
-  //     }
-  //
-  //   </div>
 
   const HoneyTable = () =>
     <div>
@@ -81,7 +60,7 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
   const CreateFaucet = () =>
     <div>
       <div>
-        <button className="pure-button button-xlarge" onClick={() => {
+        <ProgressButton className="pure-button button-xlarge" onClick={() => {
 
           honeyTokenBridge.createFaucet().subscribe(tx => {
             console.log("Honey faucet has been created")
@@ -92,11 +71,9 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
 
         }}>
           Create Faucet
-        </button>
-        <br/>
-        It should not be called until everyone has claimed their BEE tokens.
-        <br/>
-        BEE tokens claimed after faucet creation cannot claim from that faucet.
+        </ProgressButton>
+        <p>It should not be called until everyone has claimed their BEE tokens.</p>
+        <p>BEE tokens claimed after faucet creation cannot claim from that faucet.</p>
       </div>
     </div>
 
@@ -121,7 +98,6 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
             </div>
             <div className="pure-u-1-4"></div>
           </div>
-
 
         </div>
       </div>
