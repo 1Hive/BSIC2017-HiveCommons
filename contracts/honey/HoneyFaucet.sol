@@ -25,7 +25,7 @@ contract HoneyFaucet is FaucetPeriod {
     function HoneyFaucet(address honeyTokenAddress, address beeFaucetAddress) {
         honeyToken = HoneyToken(honeyTokenAddress);
         beeFaucet = BeeFaucet(beeFaucetAddress);
-        setFaucetPeriodLength(2628000); // 1 month in seconds
+        setFaucetPeriodLength(2628000); // 1 month = 2628000 seconds
     }
 
     function getHoneyTokenAddress() public constant returns(address) {
