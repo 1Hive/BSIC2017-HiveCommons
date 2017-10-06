@@ -46,8 +46,10 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
           <div className="loader"/>
           : null}
 
-        <p>It should not be called until everyone has claimed their BEE tokens.</p>
-        <p>BEE tokens claimed after faucet creation cannot claim from that faucet.</p>
+        <p>Bee tokens claimed after faucet creation cannot claim from that faucet.</p>
+        <p>In reality, the first Honey faucet would be created one month after the Bee faucet to ensure there had been a
+          chance for people to claim Bee.</p>
+        <p>For demo purposes we should not call this until all testers have claimed their Bee tokens.</p>
       </div>
     </div>
 

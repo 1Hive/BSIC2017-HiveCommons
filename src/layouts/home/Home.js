@@ -28,8 +28,8 @@ class Home extends Component {
                   <Link className='pure-button pure-button-primary' to='/faucet/hny'>HNY Faucet</Link>
                 </div>
                 <div className="pure-u-1 pure-u-lg-1-3">
-                  <h3>HiveCommons</h3>
-                  <p>Each month a new batch of HNY tokens will be made available to BEE holders. HNY tokens can be used to participate in HiveCommons governance.</p>
+                  <h3>Hive Commons</h3>
+                  <p>HNY tokens can be used in the commons to govern and curate public goods and services.</p>
                 </div>
               </div>
 
