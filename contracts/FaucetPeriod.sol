@@ -29,9 +29,7 @@ contract FaucetPeriod {
      *         Restricted by the specified faucet period length.
      */
     function createFaucet() public {
-
-//        require(currentFaucetExpired()); // Commented out to enable creation of faucets at anytime for testing purposes.
-
+        require(currentFaucetExpired()); // Commented out to enable creation of faucets at anytime for testing purposes.
         // Should probably use block height but it's harder to test so we'll use block time for now.
         faucetEndTime = now + faucetLength;
         setupFaucet();

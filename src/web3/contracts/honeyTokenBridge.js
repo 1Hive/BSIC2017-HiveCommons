@@ -3,6 +3,7 @@ import HoneyToken from "../../../build/contracts/HoneyToken.json"
 import HoneyFaucet from "../../../build/contracts/HoneyFaucet.json"
 import MiniMeToken from "../../../build/contracts/MiniMeToken.json"
 import * as Rx from "rxjs";
+import {skipNextAndErrorOnMissingLog} from "../utils";
 
 export default class HoneyTokenBridge {
 
@@ -60,6 +61,7 @@ export default class HoneyTokenBridge {
         return this.honeyFaucet$
             .zip(this.web3Bridge.getCoinbase$(), (honeyFaucet, coinbaseAddress) => ({honeyFaucet, coinbaseAddress}))
             .flatMap(zipResult => zipResult.honeyFaucet.createFaucet({from: zipResult.coinbaseAddress, gas: 2000000}))
+            .let(skipNextAndErrorOnMissingLog("LogFaucetCreated"))
     }
 
     isFaucetExpired() {
@@ -70,6 +72,7 @@ export default class HoneyTokenBridge {
     claimHoney() {
         return this.honeyFaucet$
             .zip(this.web3Bridge.getCoinbase$(), (honeyFaucet, coinbaseAddress) => ({honeyFaucet, coinbaseAddress}))
-            .flatMap(zipResult => zipResult.honeyFaucet.claimHoney({from: zipResult.coinbaseAddress, gas: 2000000}))
+            .flatMap(zipResult => zipResult.honeyFaucet.claimHoney({from: zipResult.coinbaseAddress, gas: 200000}))
+            .let(skipNextAndErrorOnMissingLog("LogClaimHoney"))
     }
 }

@@ -13,4 +13,4 @@ exports.convertToPromise = functionWithCallbackParam => new Promise((resolve, re
   })
 })
 
-// 'verified.0.claim.jwt'
+

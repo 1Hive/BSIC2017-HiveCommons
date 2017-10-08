@@ -59,7 +59,7 @@ contract("BeeFaucet", accounts => {
             TestUtils.increaseTestRpcTime(web3, 31540005)
             const tx = await beeFaucet.createFaucet()
 
-            assert.equal(tx.receipt.gasUsed, 1622505, "Unexpected amount of gas used")
+            assert.equal(tx.receipt.gasUsed, 1622761, "Unexpected amount of gas used")
         })
 
         it("does not create a new faucet before old faucet has expired", async () => {

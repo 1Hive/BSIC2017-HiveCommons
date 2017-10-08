@@ -3,6 +3,7 @@ import BeeFaucet from "../../../build/contracts/BeeFaucet.json"
 import MiniMeToken from "../../../build/contracts/MiniMeToken.json"
 import {formatJwt} from "../../utils/ValidationUtils.js"
 import * as Rx from "rxjs";
+import {skipNextAndErrorOnMissingLog} from "../utils";
 
 export default class BeeTokenBridge {
 
@@ -31,6 +32,11 @@ export default class BeeTokenBridge {
             .defaultIfEmpty(false)
     }
 
+    claimBeeVValue(formattedJwt) {
+        return this.canClaimBeeWithV(formattedJwt, 27)
+            .merge(this.canClaimBeeWithV(formattedJwt, 28))
+    }
+
     canClaimBeeWithV(formattedJwt, v) {
         return this.beeFaucet$
             .flatMap(beeFaucet => beeFaucet.canClaimBee(formattedJwt.sha256jwtMessagePart, v, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex))
@@ -38,17 +44,13 @@ export default class BeeTokenBridge {
             .map(canClaim => v)
     }
 
-    claimBeeVValue(formattedJwt) {
-        return this.canClaimBeeWithV(formattedJwt, 27)
-            .merge(this.canClaimBeeWithV(formattedJwt, 28))
-    }
-
     claimBeeToken(jwt) {
         const formattedJwt = formatJwt(jwt)
         return Rx.Observable.zip(this.beeFaucet$, this.claimBeeVValue(formattedJwt), this.web3Bridge.getCoinbase$(),
             (beeFaucet, vValue, coinbaseAddress) => ({beeFaucet, vValue, coinbaseAddress}))
             .flatMap(zipResult => zipResult.beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, zipResult.vValue, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
-                {from: zipResult.coinbaseAddress, gas: 2000000}))
+                {from: zipResult.coinbaseAddress, gas: 200000}))
+           .let(skipNextAndErrorOnMissingLog("LogBeeClaimed"))
     }
 
     isFaucetExpired() {

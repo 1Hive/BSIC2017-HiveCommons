@@ -16,6 +16,9 @@ contract HoneyFaucet is FaucetPeriod {
     MiniMeToken private beeTokenClone;
     uint public honeyForBeeRate;
 
+    event LogFaucetCreated(address beeTokenCloneAddress, uint honeyForBeeRateInt);
+    event LogClaimHoney(address claimerAddress, uint honeyAwarded);
+
     /**
      * @notice Create the Honey Faucet contract and set the faucet period length.
      *         This does not initialise the faucet, to do that call createFaucet().
@@ -45,6 +48,8 @@ contract HoneyFaucet is FaucetPeriod {
     function setupFaucet() internal {
         cloneBeeToken();
         setHoneyForBeeRate();
+
+        LogFaucetCreated(address(beeTokenClone), honeyForBeeRate);
     }
 
     function cloneBeeToken() private {
@@ -79,5 +84,7 @@ contract HoneyFaucet is FaucetPeriod {
         uint honeyAwarded = sendersAccountBeeBalance * honeyForBeeRate;
         beeTokenClone.destroyTokens(msg.sender, sendersAccountBeeBalance);
         honeyToken.mint(msg.sender, honeyAwarded);
+
+        LogClaimHoney(msg.sender, honeyAwarded);
     }
 }

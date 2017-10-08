@@ -21,24 +21,31 @@ const HoneyFaucetInner = ({honey, bee, updateHoneyBalance, updateHoneyToBeeRate,
       updateHoneyBalance()
       updateBeeClaimableForHoney()
       updateHoneyClaimLoading(false)
+    }, error => {
+      console.log(error)
+      updateHoneyClaimLoading(false)
     })
   }
 
+  const createFaucet = () => {
+    updateHoneyCreateFaucetLoading(true)
+    honeyTokenBridge.createFaucet().subscribe(() => {
+      console.log("Honey faucet has been created")
+      updateHoneyToBeeRate()
+      updateBeeClaimableForHoney()
+      updateHoneyFaucetExpired()
+      updateHoneyCreateFaucetLoading(false)
+    },
+    error => {
+      console.log(error)
+      updateHoneyCreateFaucetLoading(false)
+    })
+  }
 
   const CreateFaucet = () =>
     <div>
       <div>
-        <button className="pure-button pure-button-primary" onClick={() => {
-          updateHoneyCreateFaucetLoading(true)
-          honeyTokenBridge.createFaucet().subscribe(tx => {
-            console.log("Honey faucet has been created")
-            updateHoneyToBeeRate()
-            updateBeeClaimableForHoney()
-            updateHoneyFaucetExpired()
-            updateHoneyCreateFaucetLoading(false)
-          })
-
-        }}>
+        <button className="pure-button pure-button-primary" onClick={createFaucet}>
           Create Faucet
         </button>
 

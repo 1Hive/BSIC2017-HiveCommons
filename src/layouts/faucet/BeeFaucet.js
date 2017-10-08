@@ -27,11 +27,15 @@ const BeeFaucetInner = ({userData, bee, updateBeeBalance, updateBeeIsClaimable, 
 
     beeTokenBridge.claimBeeToken(jwt)
       .subscribe(() => {
-        console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
-        updateBeeBalance()
-        updateBeeIsClaimable(jwt)
-        updateBeeClaimLoading(false)
-      })
+          console.log("Bee Token Claim tx has been mined (doesn't necessarily mean it has given the user a token though) lets check their balance.")
+          updateBeeBalance()
+          updateBeeIsClaimable(jwt)
+          updateBeeClaimLoading(false)
+        },
+        error => {
+          console.log(error)
+          updateBeeClaimLoading(false)
+        })
   }
 
   const BeeFaucetGuest = HiddenOnlyAuth(() =>
