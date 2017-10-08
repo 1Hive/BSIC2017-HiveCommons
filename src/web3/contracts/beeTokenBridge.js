@@ -50,7 +50,7 @@ export default class BeeTokenBridge {
             (beeFaucet, vValue, coinbaseAddress) => ({beeFaucet, vValue, coinbaseAddress}))
             .flatMap(zipResult => zipResult.beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, zipResult.vValue, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex,
                 {from: zipResult.coinbaseAddress, gas: 200000}))
-           .let(skipNextAndErrorOnMissingLog("LogBeeClaimed"))
+            .let(skipNextAndErrorOnMissingLog("LogBeeClaimed"))
     }
 
     isFaucetExpired() {

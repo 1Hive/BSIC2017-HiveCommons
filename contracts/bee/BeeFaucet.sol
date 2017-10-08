@@ -13,8 +13,9 @@ contract BeeFaucet is Ownable, FaucetPeriod {
 
     MiniMeToken private beeToken;
     address private miniMeTokenFactoryAddress;
-    address public kycProviderPublicAddress; // For verifying attestations to individuality.
-    mapping(bytes32 => bool) public claimedAttestations;
+    address public kycProviderPublicAddress;
+    uint64 public faucetStartTime;
+    mapping(bytes32 => uint64) public claimedAttestations;
 
     event LogBeeClaimed(address receiver);
 
@@ -41,6 +42,7 @@ contract BeeFaucet is Ownable, FaucetPeriod {
      */
     function setupFaucet() internal {
         beeToken = new MiniMeToken(miniMeTokenFactoryAddress, 0, 0, "Bee", 18, "BEE", true);
+        faucetStartTime = uint64(now);
     }
 
     /**
@@ -52,12 +54,16 @@ contract BeeFaucet is Ownable, FaucetPeriod {
         kycProviderPublicAddress = _kycProviderPublicAddress;
     }
 
+    /**
+     * @notice Check if the attestation has already been claimed and the signature is valid
+     * @return true if claimable, false otherwise
+     */
     function canClaimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public constant returns (bool) {
         return notAlreadyClaimed(jwtMessageHash) && validAttestation(jwtMessageHash, v, r, s);
     }
 
     function notAlreadyClaimed(bytes32 jwtMessageHash) private returns (bool) {
-        return !claimedAttestations[jwtMessageHash];
+        return claimedAttestations[jwtMessageHash] < faucetStartTime;
     }
 
     function validAttestation(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
@@ -79,8 +85,7 @@ contract BeeFaucet is Ownable, FaucetPeriod {
     {
         require(canClaimBee(jwtMessageHash, v, r, s));
 
-        // Update claimed attestation to prevent user claiming twice.
-        claimedAttestations[jwtMessageHash] = true;
+        claimedAttestations[jwtMessageHash] = uint64(now);
 
         beeToken.generateTokens(msg.sender, 1);
         LogBeeClaimed(msg.sender);

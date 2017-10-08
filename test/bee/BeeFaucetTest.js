@@ -59,7 +59,7 @@ contract("BeeFaucet", accounts => {
             TestUtils.increaseTestRpcTime(web3, 31540005)
             const tx = await beeFaucet.createFaucet()
 
-            assert.equal(tx.receipt.gasUsed, 1622761, "Unexpected amount of gas used")
+            assert.equal(tx.receipt.gasUsed, 1628422, "Unexpected amount of gas used")
         })
 
         it("does not create a new faucet before old faucet has expired", async () => {
@@ -123,7 +123,7 @@ contract("BeeFaucet", accounts => {
             const formattedJwt = ValidationUtils.formatJwt(jwtWithValidSignature)
             const tx = await beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex, {from: receiverAccount})
 
-            assert.equal(tx.receipt.gasUsed, 143887, "Unexpected amount of gas used")
+            assert.equal(tx.receipt.gasUsed, 144186, "Unexpected amount of gas used")
         })
 
         it("doesn't send BEE to receiverAddress if attestation is invalid", async () => {

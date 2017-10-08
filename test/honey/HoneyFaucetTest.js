@@ -61,7 +61,7 @@ contract("HoneyFaucet", accounts => {
         it("costs the expected amount of gas", async () => {
             const tx = await honeyFaucet.createFaucet()
 
-            assert.equal(tx.receipt.gasUsed, 1740951, "Unexpected amount of gas used")
+            assert.equal(tx.receipt.gasUsed, 1726032, "Unexpected amount of gas used")
         })
 
         it("creates a new faucet with correct end time when old faucet has expired", async () => {
@@ -153,7 +153,7 @@ contract("HoneyFaucet", accounts => {
             await TestUtils.assertThrows(() => honeyFaucet.claimHoney({from: beeOwner1, gas: maxGasUsed}), maxGasUsed)
         })
 
-        it ("awards correct amount of Honey to multiple claimers", async () => {
+        it("awards correct amount of Honey to multiple claimers", async () => {
             const expectedClaimAmount = 1.0416666666666667e+24;
             await grantBeeTokenToAccount(beeOwner2, jwtWithValidSignature2)
             await honeyFaucet.createFaucet()
