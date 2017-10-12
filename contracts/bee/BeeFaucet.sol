@@ -7,15 +7,15 @@ import "./MiniMeToken.sol";
 /**
  * @notice A faucet that can be reset once a year and enables the claiming of
  *         one Bee token for each unclaimed uniquely identifying attestation.
- * TODO: Should be up upgradable somehow (not sure how yet) as verification process could change in the future.
+ *         TODO: Should be upgradable, probably with an approach similar to EtherRouter.
  */
 contract BeeFaucet is Ownable, FaucetPeriod {
 
     MiniMeToken private beeToken;
     address private miniMeTokenFactoryAddress;
-    address public kycProviderPublicAddress;
+    address public attestationProviderPublicAddress;
     uint64 public faucetStartTime;
-    mapping(bytes32 => uint64) public claimedAttestations;
+    mapping(bytes32 => uint64) public attestationClaimedTimes;
 
     event LogBeeClaimed(address receiver);
 
@@ -26,7 +26,7 @@ contract BeeFaucet is Ownable, FaucetPeriod {
      */
     function BeeFaucet(address _miniMeTokenFactoryAddress, address _appPublicAddress) {
         miniMeTokenFactoryAddress = _miniMeTokenFactoryAddress;
-        kycProviderPublicAddress = _appPublicAddress;
+        attestationProviderPublicAddress = _appPublicAddress;
         setFaucetPeriodLength(31540000); // ~ 1 year in seconds
         createFaucet();
     }
@@ -36,7 +36,7 @@ contract BeeFaucet is Ownable, FaucetPeriod {
     }
 
     /**
-     * @notice Overrides abstract setupFaucet() in FaucetPeriod.
+     * @notice Overrides abstract setupFaucet() in FaucetPeriod. Can be called through createFaucet().
      *         Creates a new Bee token which once claimed can be used to claim Honey.
      *         Can be called once a year resetting individual's allowances.
      */
@@ -48,27 +48,10 @@ contract BeeFaucet is Ownable, FaucetPeriod {
     /**
      * @notice Update the public address used for verifying attestations. Note we may allow multiple attestation
      *         sources so this could be extended to add/remove from a mapping of valid public addresses
-     * @param _kycProviderPublicAddress The new public address for verifying attestations.
+     * @param _attestationProviderPublicAddress The new public address for verifying attestations.
      */
-    function updateKycProviderPublicAddress(address _kycProviderPublicAddress) public onlyOwner {
-        kycProviderPublicAddress = _kycProviderPublicAddress;
-    }
-
-    /**
-     * @notice Check if the attestation has already been claimed and the signature is valid
-     * @return true if claimable, false otherwise
-     */
-    function canClaimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public constant returns (bool) {
-        return notAlreadyClaimed(jwtMessageHash) && validAttestation(jwtMessageHash, v, r, s);
-    }
-
-    function notAlreadyClaimed(bytes32 jwtMessageHash) private returns (bool) {
-        return claimedAttestations[jwtMessageHash] < faucetStartTime;
-    }
-
-    function validAttestation(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
-        address signerPublicAddress = ecrecover(jwtMessageHash, v, r, s);
-        return kycProviderPublicAddress == signerPublicAddress;
+    function updateAttestationProviderPublicAddress(address _attestationProviderPublicAddress) public onlyOwner {
+        attestationProviderPublicAddress = _attestationProviderPublicAddress;
     }
 
     /**
@@ -85,9 +68,26 @@ contract BeeFaucet is Ownable, FaucetPeriod {
     {
         require(canClaimBee(jwtMessageHash, v, r, s));
 
-        claimedAttestations[jwtMessageHash] = uint64(now);
+        attestationClaimedTimes[jwtMessageHash] = uint64(now);
 
         beeToken.generateTokens(msg.sender, 1);
         LogBeeClaimed(msg.sender);
+    }
+
+    /**
+     * @notice Check if the attestation has already been claimed and the signature is valid
+     * @return true if claimable, false otherwise
+     */
+    function canClaimBee(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) public constant returns (bool) {
+        return notAlreadyClaimed(jwtMessageHash) && validAttestation(jwtMessageHash, v, r, s);
+    }
+
+    function notAlreadyClaimed(bytes32 jwtMessageHash) private returns (bool) {
+        return attestationClaimedTimes[jwtMessageHash] < faucetStartTime;
+    }
+
+    function validAttestation(bytes32 jwtMessageHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
+        address signerPublicAddress = ecrecover(jwtMessageHash, v, r, s);
+        return attestationProviderPublicAddress == signerPublicAddress;
     }
 }

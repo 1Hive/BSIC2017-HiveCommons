@@ -4,18 +4,22 @@ const BeeFaucet = artifacts.require("BeeFaucet.sol")
 const ValidationUtils = require("../../src/utils/ValidationUtils.js")
 const TestUtils = require("../TestUtils.js")
 
+/**
+ * Important! Block gas limit must be set to 5000000 if using testrpc eg 'testrpc --gasLimit 5000000'
+ * The BeeFaucet requires ~ 4840000 gas to deploy, requires further investigation.
+ */
 contract("BeeFaucet", accounts => {
 
     let miniMeTokenFactory, beeFaucet, beeToken;
-    const kycProviderPublicAddress = "0xdb2e8d0b7525dd9ce4ad87c38072c26850215aee"
+    const attestationProviderPublicAddress = "0xdb2e8d0b7525dd9ce4ad87c38072c26850215aee"
     const jwtWithValidSignature = "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiIyb25qclJZeUZ1Um9Ya2RHalBaUXk4UjZoWGFGeE4yMmFEeCIsImNsYWltIjp7IlVuaXF1ZW5lc3MiOiJJcyB1bmlxdWUifSwiZXhwIjoxNTA4ODY3MDc5NTcwLCJpc3MiOiIyb2hhMVZyVkNhelhwTFRvY1ZSSG9mVVg1dVJEbXZQVWs0QiIsImlhdCI6MTUwNjI3NTA3OTU3MH0.j27nrUtF76OYoEcx2I5tJl1P8LCJj8hpI22Ca1kx7n_hI9K4BgbQyPbEG7tuCEdsGPukPvsUML2s-MSiRrZnfg"
-    // const kycProviderPublicAddress = "0x43254ffee679447fd11fa5a1003569bd81f7c0af"
+    // const attestationProviderPublicAddress = "0x43254ffee679447fd11fa5a1003569bd81f7c0af"
     // const jwtWithValidSignature = "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiIyb2Z5THlxZXRhSFpCMnBta2RYZm1icUNMelQ1QkpFTFZOMiIsImNsYWltIjp7IlVuaXF1ZW5lc3MiOiJJcyBVbmlxdWUgLyBIYXNoIG9mIHRoZWlyIHBhc3Nwb3J0IG51bWJlciJ9LCJleHAiOjE1MzgyMjI3OTg1MjksImlzcyI6IjJvdHdrSnF2RzhtNWR0OVJldlFHaUhYR2gzTmV6MWk3S0RXIiwiaWF0IjoxNTA2Njg2Nzk4NTI5fQ.cF-QFJ1pOGoJdlfaPgtUuYrm07wCKwOLCFNW4aCcJgttnuy0kpVWfWAcx4EGDeg_Ocrt-Zz2qdrT4HnyOSdZXQ"
     const jwtWithInvalidSignature = "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJzdWIiOiIyb25qclJZeUZ1Um9Ya2RHalBaUXk4UjZoWGFGeE4yMmFEeCIsImNsYWltIjp7IlVuaXF1ZW5lc3MiOiJJcyB1bmlxdWUifSwiZXhwIjoxNTA4ODY3MDc5NTcwLCJpc3MiOiIyb2hhMVZyVkNhelhwTFRvY1ZSSG9mVVg1dVJEbXZQVWs0QiIsImlhdCI6MTUwNjI3NTA3OTU3MH0.j27nrUtF76OYoEcx2I5tJl1P8LCJj8hpI22Ca1kx70_hI9K4BgbQyPbEG7tuCEdsGPukPvsUML2s-MSiRrZnfg"
 
     beforeEach(async () => {
         miniMeTokenFactory = await MiniMeTokenFactory.new();
-        beeFaucet = await BeeFaucet.new(miniMeTokenFactory.address, kycProviderPublicAddress)
+        beeFaucet = await BeeFaucet.new(miniMeTokenFactory.address, attestationProviderPublicAddress)
         const beeTokenAddress = await beeFaucet.getBeeTokenAddress()
         beeToken = MiniMeToken.at(beeTokenAddress)
     })
@@ -30,8 +34,8 @@ contract("BeeFaucet", accounts => {
         })
 
         it("sets kycProviderPublicAddress", async () => {
-            const actualKycProviderPublicAddress = await beeFaucet.kycProviderPublicAddress()
-            assert.equal(actualKycProviderPublicAddress, kycProviderPublicAddress, "Kyc public address is incorrect")
+            const actualAttestationProviderPublicAddress = await beeFaucet.attestationProviderPublicAddress()
+            assert.equal(actualAttestationProviderPublicAddress, attestationProviderPublicAddress, "Kyc public address is incorrect")
         })
 
         it("creates a new faucet with correct end time", async () => {
@@ -59,7 +63,7 @@ contract("BeeFaucet", accounts => {
             TestUtils.increaseTestRpcTime(web3, 31540005)
             const tx = await beeFaucet.createFaucet()
 
-            assert.equal(tx.receipt.gasUsed, 1628422, "Unexpected amount of gas used")
+            assert.closeTo(tx.receipt.gasUsed, 1628422, 100, "Unexpected amount of gas used")
         })
 
         it("does not create a new faucet before old faucet has expired", async () => {
@@ -123,7 +127,7 @@ contract("BeeFaucet", accounts => {
             const formattedJwt = ValidationUtils.formatJwt(jwtWithValidSignature)
             const tx = await beeFaucet.claimBee(formattedJwt.sha256jwtMessagePart, 27, formattedJwt.jwtSigRHex, formattedJwt.jwtSigSHex, {from: receiverAccount})
 
-            assert.equal(tx.receipt.gasUsed, 144186, "Unexpected amount of gas used")
+            assert.closeTo(tx.receipt.gasUsed, 144186, 100, "Unexpected amount of gas used")
         })
 
         it("doesn't send BEE to receiverAddress if attestation is invalid", async () => {

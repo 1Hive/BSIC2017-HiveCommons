@@ -9,6 +9,10 @@ const addressFromPublicKey = require("../src/utils/ValidationUtils.js").addressF
 const uPortAppPublicKey = "0x048be5b9c7b2ea14ffad30269ce16ed7a362aea2a31457825a25d1978ad8cd4c405001cb1909b4803a9e69f994ce8399c7ceec7b51a1df0e952dbf8a2f43d86011"
 const uPortAppAccountAddress = addressFromPublicKey(web3, uPortAppPublicKey)
 
+/**
+ * Important! Block gas limit must be set to 5000000 if using testrpc eg 'testrpc --gasLimit 5000000'
+ * The BeeFaucet requires ~ 4840000 gas to deploy, requires further investigation.
+ */
 module.exports = deployer => {
     deployer.deploy(MiniMeTokenFactory)
         .then(() => deployer.deploy(BeeFaucet, MiniMeTokenFactory.address, uPortAppAccountAddress))

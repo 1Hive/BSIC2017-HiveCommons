@@ -1,12 +1,12 @@
 pragma solidity ^0.4.15;
 
 /**
- * @notice Abstract contract which represents a faucet period and restricts creation to the period specified.
+ * @notice Abstract contract which represents a faucet period and restricts faucet creation to the period specified.
  */
 contract FaucetPeriod {
 
     // TODO: Investigate use of smaller uint's or uint256.
-    // I think converting now to a uint64 outweighs the benefit of using smaller uint's
+    // I think converting 'now' to a uint64 outweighs the benefit of using smaller uint's
     uint64 public faucetLength;
     uint64 public faucetEndTime;
 
@@ -32,7 +32,6 @@ contract FaucetPeriod {
      */
     function createFaucet() public {
         require(currentFaucetExpired()); // Comment out to enable creation of faucets at anytime for testing purposes.
-        // Should probably use block height but it's harder to test so we'll use block time for now.
         faucetEndTime = uint64(now) + faucetLength;
         setupFaucet();
     }
